@@ -159,3 +159,4 @@ CRISPY_TEMPLATE_PACK = "bootstrap"
 LOGIN_URL = '/accounts/login'
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app/']
+
