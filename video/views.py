@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from .models import * 
 from .forms import UploadImageForm, CreateProjectForm, VideoTextForm
 from moviepy.editor import *
-import cv2
 from PIL import Image
 import numpy as np 
 import time 
