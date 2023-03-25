@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import redirect, render 
-from .models import * 
-from .forms import UploadImageForm, CreateProjectForm, VideoTextForm
+from models import * 
+from forms import UploadImageForm, CreateProjectForm, VideoTextForm
 from moviepy.editor import *
 from PIL import Image
 import numpy as np 

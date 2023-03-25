@@ -1,6 +1,6 @@
 from django.shortcuts import render 
-from .forms import UserUpdateForm, UpdateProfileForm
-from .models import Profile  
+from forms import UserUpdateForm, UpdateProfileForm
+from models import Profile  
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
