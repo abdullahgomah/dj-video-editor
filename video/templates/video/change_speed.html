@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+تغيير سرعة الفيديو
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-3">تغيير سرعة الفيديو</h2>
+
+    <form action="" method="POST" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>الفيديو*</p>
+        <input type="file" name="video_file" class="form-control">
+
+        <br>
+        <p>سرعة الفيديو*</p>
+        <input type="text" name="speed_factor" class="form-control" placeholder="ادخل سرعة الفيديو بالأرقام (1 ، 1.5 ، 2.5)">
+
+        <br>
+
+        <button class="btn btn-dark form-control">بدء</button>
+    </form>
+</div>
+
+{% endblock content %}

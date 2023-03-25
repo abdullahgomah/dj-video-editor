@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+إنشاء فيديو
+{% endblock title %}
+
+
+{% block content %}
+
+<h2>إنشاء فيديو مع لوجو</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>الصور*</p>
+    <input type="file" name="image_files" multiple class="form-control" accept="image/*" required>
+    <br>
+    <p>الصوت*</p>
+    <input type="file" name="audio_file" accept="audio/*" class="form-control" required>
+    <br>
+    <p>ملف اللوجو*</p>
+    <input type="file" accept="image/*" name="logo_file" class="form-control">
+    <br>
+    <input type="text" name="top_text" placeholder="النص العلوي" class="form-control" required>
+    <br>
+    <input type="text" name="bottom_text" placeholder="النص السفلي" class="form-control" required>
+    <br>
+    <input type="number" name="time_per_img" class="form-control" placeholder="الوقت بالثواني لكل صورة" required>
+    <br>
+    <select class="form-select" name="video-res" aria-label="Default select example" required>
+        <option selected>اختر مقاس الفيديو</option>
+        <option value="facebook1">فيسبوك 1200x628</option>
+        <option value="facebook2">فيسبوك 810x450</option>
+        <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
+      </select>
+      <br>
+    <button type="submit" class="btn btn-success form-control">إنشاء</button>
+
+</form>
+
+{% endblock content %}

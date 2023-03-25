@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="formFile" class="form-label">ارفع الصور</label>
+            {{form.files}}
+        </div>
+
+        <button type="submit">ارفع</button>
+    </form>
+{% endblock content %}

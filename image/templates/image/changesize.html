@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+تغيير حجم الصورة
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h2 class="mb-3">تغيير حجم الصورة</h2>
+    <form action="" method="POST" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <p>الصورة*</p>
+            <input type="file" name="image" class="form-control" id="">
+        </div>
+
+        <div class="mb-3">
+            <p>الطول*</p>
+            <input type="text" placeholder="أدخل الطول المطلوب" name="height" class="form-control">
+        </div>
+        <div class="mb-3">
+            <p>العرض*</p>
+            <input type="text" placeholder="أدخل العرض المطلوب" name="width" class="form-control">
+        </div>
+        <br>
+        <button type="submit" class="form-control btn btn-dark">تغيير</button>
+    </form>
+</div>
+
+{% endblock content %}

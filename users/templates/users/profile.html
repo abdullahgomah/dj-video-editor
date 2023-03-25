@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+الملف الشخصي
+{% endblock title %}
+
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static './css/profile.css' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+
+<style>
+  .public-information, .security {
+    padding: 1rem;
+  }
+  .info div {
+    padding-top: 1rem;
+  }
+  .info div h3 {
+    padding-bottom: .5rem;
+  }
+</style>
+{% endblock stylesheet %}
+
+
+{% block content %}
+<div class="container">
+  <h1>حسابك</h1>
+  <p>قم بإدارة التفاصيل الخاصة بك، وعرض حالتك وكلمة المرور الخاصة بك</p>
+  <div class="public-information">
+    <h2>معلومات عامة</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="info">
+          <div>
+            {{user_update.username|as_crispy_field}}
+          </div>
+          <br>
+          <div>
+            {{user_update.email|as_crispy_field}}
+          </div>
+          <br>
+          <div>
+            {{user_update.first_name|as_crispy_field}}
+          </div>
+          <br>
+          <div>
+            {{user_update.last_name|as_crispy_field}}
+          </div>
+          <br>
+          <div>
+            {{profile_update.image|as_crispy_field}}
+          </div>
+        </div>
+        <br>
+        <div class="grid">
+          <div class="item" style="display: flex; justify-content: space-between; width: 100%;">
+            <button type="submit" class="btn btn-dark">تحديث المعلومات</button>
+            <a href="{% url 'account_reset_password' %}" class="btn btn-dark">تغيير كلمة المرور</a>
+          </div>
+          <div class="item"></div>
+          <div class="item"></div>
+        </div>
+      </form>
+      <!-- <a href="#" class="update">تحديث المعلومات</a> -->
+      <br>
+      <!-- <a href="#" class="btn btn-solid-dark">تحديث المعلومات</a> -->
+  </div>
+  <!-- <div class="security">
+    <h2>الحماية</h2>
+      <div class="info">
+        <div>
+          <h3>البريد الالكتروني</h3>
+          <input type="text" placeholder="ادخل البريد الالكتروني">
+        </div>
+        <div>
+          <h3>كلمة السر</h3>
+          <input type="text" placeholder="ادخل كلمة السر">
+        </div>
+      </div>
+    <a href="" class="update" id="upd"> تغيير كلمة المرور</a>
+    <a href="#" class="delete">حذف الحساب</a>
+  </div> -->
+</div>
+{% endblock %}

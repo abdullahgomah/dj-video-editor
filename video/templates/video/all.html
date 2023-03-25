@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+جميع المشاريع
+{% endblock title %}
+
+
+{% block content %}
+
+
+<h2 class="mb-3">جميع المشاريع</h2>
+
+<div class="container">
+    <div class="row">
+    {% for project in projects %}
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+            <a href="{% url 'video:project' project.id %}">
+          <img src="{{project.images.all.first.image.url}}" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">
+                    {{project}}
+                </h5>
+            </div>
+        </a>
+        </div>
+      </div>
+    {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock content %}

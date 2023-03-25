@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{project}}
+{% endblock title %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h2 class="mb-3">رفع صور</h2>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{upload_form}}
+            
+            <button type="submit" class="btn btn-lg btn-success mt-2 form-control">رفع</button>
+
+            <br><br>
+
+            <a href="#" class="btn btn-success">تغيير حجم الصور</a>
+            <a href="#" class="btn btn-success">إضافة لوجو</a>
+            <a href="{% url 'video:test-function' project.id %}">Test</a>
+
+        </form>
+        
+      </div>
+      <div class="col-md-8">
+        <h2>إنشاء فيديو</h2>
+        <form action="{% url 'video:combine-images' project.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{video_text_form.top_text}}
+            <br>
+            {{video_text_form.bottom_text}}
+            <br>
+            {{video_text_form.time_per_img}}
+            <br>
+            <p>مقاس الفيديو</p>
+            {{video_text_form.res}}
+            <br>
+            <br>
+            <!-- <a href="{% url 'video:combine-images' project.id %}" class="btn btn-success">دمج في فيديو</a> -->
+            <button type="submit" class="btn-lg btn btn-success">دمج في فيديو</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+<div class="card-group row">
+{% for img in project.images.all %}
+        <div class="col-md-4">
+
+            <div class="card m-2">
+                <img src="{{img.image.url}}" class="card-img-top" alt={{img}}>
+                <div class="card-body">
+                    <form action="{% url 'video:del-img' img.id %}" method="POST">
+                        {% csrf_token %}
+                        <h5 class="card-title">{{img.name}}</h5>
+                        <input type="hidden" name="next" value="{{request.path}}">
+                        <!-- <a href={% url "video:del-img" id=img.id %} class="btn btn-danger">Delete</a> -->
+                        <button class="btn-sm btn btn-danger">حذف</button>
+                    </form>
+                    <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                </div>
+            </div> 
+
+        </div>
+{% endfor %}
+</div>
+
+
+
+
+{% endblock %}

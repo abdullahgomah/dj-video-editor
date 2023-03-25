@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load i18n %}
+
+{% block title %}{% trans "إنشاء حساب" %}{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static './css/signup.css' %}">
+{% endblock stylesheet %}
+
+{% block content %}
+<!-- <h1>{% trans "إنشاء حساب" %}</h1> -->
+
+<!-- <p>{% blocktrans %}هل لديك حساب بالفعل؟ <a href="{{ login_url }}">تسجيل دخول</a>.{% endblocktrans %}</p> -->
+
+<form class="signup signup-form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    <div class="container">
+
+        <div class="form-heading">
+            <h2>إنشاء حساب</h2>
+            <a href="{{ login_url }}" class="btn btn-dark">دخول</a>
+        </div>
+        <br>
+
+        <div class="fields">
+            <!-- 
+            <div class="input">
+                {{ form.username }}
+            </div>
+
+            <div class="input">
+                {{ form.email }}
+            </div>
+
+            <div class="input">
+                {{ form.password1 }}
+            </div>
+
+            <div class="input">
+                {{ form.password2 }}
+            </div> -->
+
+            {{form.as_p}}
+
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="cta">
+                <button type="submit" class="btn btn-dark">{% trans "إنشاء حساب" %} &raquo;</button>
+                <a href="{{login_url}}" class="btn btn-dark">دخول</a>
+            </div>
+            <p>بالتسجيل أنت توافق على سياسة الخصوصية والشروط والأحكام</p>
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

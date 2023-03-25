@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+الصفحة الرئيسية
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">تغيير حجم الصورة</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'image:changesize' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">إنشاء إعلان</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'video:combine-images' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="{% static 'images/video-withlogo-cover.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">إنشاء فيديو مع لوجو</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'video:combine-images-withlogo' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="{% static 'images/Screenshot-Facebook.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">إنشاء فيديو نموذج تقييم</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'video:combine-images-withlogo' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">إزالة الصوت من الفيديو</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'video:remove-audio' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">تغيير سرعة الفيديو</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'video:change-speed' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">تغيير سرعة الصوت</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'audio:change-speed' %}" class="btn btn-dark">ابدأ الآن !</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Repeat the above HTML for each set of 4 cards -->
+    </div>
+  </div>
+
+{% endblock content %}

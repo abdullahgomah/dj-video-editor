@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">إنشاء مشروع</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" class="btn-lg btn mt-3 btn-success form-control">إنشاء</button>
+    </form>
+
+{% endblock %}
