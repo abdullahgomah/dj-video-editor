@@ -5,7 +5,7 @@ from moviepy.editor import *
 from pydub import AudioSegment
 
 # Create your views here.
-def change_audio_speed2(request):
+def change_audio_speed(request):
     if request.method == 'POST':
         audio_file = request.FILES['audio_file']
         speed_factor = float(request.POST['speed_factor'])
@@ -37,7 +37,7 @@ def change_audio_speed2(request):
     return render(request, 'audio/changespeed.html')
 
 
-def change_audio_speed(request):
+def change_audio_speed3(request):
     if request.method == 'POST':
         audio_file = request.FILES['audio_file']
         speed_factor = float(request.POST['speed_factor'])
