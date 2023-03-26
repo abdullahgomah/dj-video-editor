@@ -31,3 +31,4 @@ sqlparse==0.4.3
 tqdm==4.65.0
 tzdata==2022.7
 urllib3==1.26.14
+Wand==0.6.11
