@@ -312,13 +312,11 @@ def combine_video_withlogo(request):
 
 
         # Concatenate the image clips into a video clip
-        video_clip = concatenate_videoclips(image_clips)
+        video_clip = concatenate_videoclips(image_clips, method='compose').set_audio(audio_file)
 
         # Load the audio file using moviepy
-        audio_clip = AudioFileClip(audio.temporary_file_path())
+        # audio_clip = AudioFileClip(audio.temporary_file_path())
 
-        # Add the audio to the video clip
-        video_clip = video_clip.set_audio(audio_clip)
 
         # Load the logo image using moviepy
         logo_clip = ImageClip('temp_logo.png', transparent=True).set_duration(video_clip.duration).resize(height=110)
@@ -335,8 +333,8 @@ def combine_video_withlogo(request):
             response['Content-Disposition'] = f'attachment; filename=output_video.mp4'
 
         # Delete the temporary files
-        os.remove('temp_logo.png')
         os.remove(filename)
+        os.remove('temp_logo.png')
 
         return response
 
