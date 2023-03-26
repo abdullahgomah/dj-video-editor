@@ -278,7 +278,7 @@ def combine_video_withlogo(request):
 
         audio_clip = AudioFileClip(audio.temporary_file_path()) 
 
-        audio_file = afx.audio_loop(audio_clip, duration=int(len(images) * int(tpi)))
+        audio_file = afx.audio_loop(AudioFileClip(audio.temporary_file_path()), duration=int(len(images) * int(tpi)))
 
         res = request.POST.get('video-res') 
 
