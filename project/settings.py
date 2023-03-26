@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r(99a#r(5dm=9q%6kxr*j7&1d+k&q&i7rns@-b49692ip9o#)g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
-ALLOWED_HOSTS = ['web-production-3c10.up.railway.app']
+ALLOWED_HOSTS = ['web-production-3c10.up.railway.app', '*']
 
 
 # Application definition
@@ -158,5 +158,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap"
 # LOGIN / LOGOUT URLS 
 LOGIN_URL = '/accounts/login'
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app/']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app']
 
