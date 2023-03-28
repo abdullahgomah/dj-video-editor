@@ -310,12 +310,28 @@ def combine_video_withlogo(request):
         image_clips = [ImageClip(img_path).set_position("center", 'center').fx(vfx.resize, height=height).set_duration(tpi) for img_path in image_paths]
 
 
+        top_text_clip = TextClip(txt=str(request.POST.get("top_text")), fontsize=font_size, size=((0, 0)), color='white').set_duration(tpi)
+        bottom_text_clip = TextClip(txt=str(request.POST.get("bottom_text")), fontsize=font_size, size=((0, 0)) ,color='white').set_duration(tpi)
+        
+        top_text_width, top_text_height = top_text_clip.size 
+        bottom_text_width, bottom_text_height = bottom_text_clip.size 
+        
+        top_color_clip = ColorClip(size=(width, top_text_height+20), color=(0, 0, 0)).set_duration(tpi).set_position("top", "center")
+        bottom_color_clip = ColorClip(size=(width, bottom_text_height+20), color=(0, 0, 0)).set_duration(tpi).set_position("center", "center")
+
+        final_top_text_clip = CompositeVideoClip(clips=[top_color_clip, top_text_clip.set_position("center", "center")])
+        final_bottom_text_clip = CompositeVideoClip(clips=[bottom_color_clip, bottom_text_clip.set_position("center", "center")])
+
+        ## this is final clips list
+        composite_clips = []
+
+        for clip in image_clips:
+            composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_position('top', 'center'), final_bottom_text_clip.set_position('bottom', 'center')], size=(width, height))
+            composite_clips.append(composite_clip)
+
 
         # Concatenate the image clips into a video clip
-        video_clip = concatenate_videoclips(image_clips, method='compose').set_audio(audio_file)
-
-        # Load the audio file using moviepy
-        # audio_clip = AudioFileClip(audio.temporary_file_path())
+        video_clip = concatenate_videoclips(composite_clips, method='compose').set_audio(audio_file)
 
 
         # Load the logo image using moviepy
