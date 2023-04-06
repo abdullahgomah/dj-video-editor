@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{plans}}
+{% endblock title %}
+
+{%  block content  %}
+
+<div class="container mt-5">
+      <div class="row ">
+          <div class="card">
+            <!-- <div class="card-header mt-4 form-control"> -->
+              <h3 class="card-title mt-3">{{plans.name}} 🔥🔥</h3>
+            <!-- </div> -->
+            <div class="card-body">
+                  <h5 class="card-text"><b>{{plans.price}} $</b> / شهرياً</h5>
+                  <br>
+                  <h5 class="card-text">{{feature.videoTemplates}} نموذج فيديو</h5>
+                  <br>
+
+                  <h5 class="card-text">
+                    {% if feature.watermark == 0 %}
+
+                    <p>
+                      <i class="fa-regular fa-circle-check" style="color: #008040;"></i>
+                       بدون علامة مائية 
+                    </p>
+  
+                    {% else %}
+                    <p>
+                      <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                       بدون علامة مائية
+                    </p>
+                    {% endif %}
+                  </h5>
+                <a href="" class="btn btn-lg btn-dark form-control mb-3">تواصل مع الدعم</a>
+                <div id="smart-button-container">
+                  <div style="text-align: center">
+                    <div id="paypal-button-container"></div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        
+
+        <!-- Include the PayPal JavaScript SDK -->
+        <!-- <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}&currency={{paypal_info.PAYPAL_CURRENCY }}" data-namespace="paypal_sdk"></script> -->
+
+        <!-- <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}&currency={{paypal_info.PAYPAL_CURRENCY}}" data-sdk-integration-source="button-factory" data-namespace="paypal_sdk"></script>​ -->
+
+        <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}" data-namespace="paypal_sdk"></script>
+
+        <script>
+
+          function initPayPalButton() {
+            paypal_sdk.Buttons({
+                style: {
+                  shape: "rect",
+                  color: "gold",
+                  layout: "vertical",
+                  label: "paypal",
+                },
+                createOrder: function (data, actions) {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          currency_code: "USD",
+
+                          value: "{{plans.price}}",
+                        },
+                      },
+                    ],
+                  });
+                },
+                onApprove: function (data, actions) {
+                  return actions.order.capture().then(function (orderData) {
+                    // Full available details
+                    console.log(
+                      "Capture result",
+                      orderData,
+                      JSON.stringify(orderData, null, 2)
+                    );
+
+                    // Show a success message within this page, e.g.
+                    const element = document.getElementById(
+                      "paypal-button-container"
+                    );
+                    element.innerHTML = "";
+                    element.innerHTML = "<h3>Thank you for your payment!</h3>";
+
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                  });
+                },
+
+                onError: function (err) {
+                  console.log(err);
+                },
+              })
+              .render("#paypal-button-container");
+          }
+          initPayPalButton();
+        </script>
+      </div>
+    </div>
+
+
+{%  endblock content  %}

@@ -1,0 +1,80 @@
+{% extends 'base.html'  %}
+
+{% block title %}
+الأسعار
+{% endblock %}
+
+
+{% block content %}
+
+    <style>
+      * {
+        font-family: 'Cairo', sans-serif;
+      }
+      .head{
+        text-align: center;
+            font-family: unset;
+    font-weight: 600;
+    color: #84848d;
+      }
+      .card{
+        border: .5px solid #84848d;
+        border-radius: 3px;
+        text-align: center;
+      }
+    </style>
+
+
+
+   <div class="container head mt-5">
+    <div class="row">
+      <h1> الباقات </h1>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure voluptas recusandae commodi perferendis repellendus, nesciunt voluptates libero beatae a vero at nihil ut aut ducimus dolor animi enim. Accusantium, voluptatem.
+      </p>
+    </div>
+   </div>
+  <div class="container mt-5">
+    <div class="row">  
+
+     
+       {% for p  in plans  %}  
+
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card shadow-lg mb-5 bg-white">
+          <div class="card-header">
+            <h5 class="card-title">{{p.name}}</h5>
+          </div>
+          <div class="card-body"> 
+            <h2 class="card-text">{{p.price}} $ / شهرياً</h2>
+            
+              {% for feature in features %}
+                {% if feature.plan.name == p.name %}
+                  <p class="card-text">{{feature.numberVideos}} فيديوهات </p>  
+
+                  {% if feature.watermark == 0 %}
+
+                  <p>
+                    <i class="fa-regular fa-circle-check" style="color: #008040;"></i>
+                     بدون علامة مائية 
+                  </p>
+
+                  {% else %}
+                  <p>
+                    <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                     بدون علامة مائية
+                  </p>
+                  {% endif %}
+
+
+                {% endif %}
+              {% endfor  %}
+              
+                  
+            <a class="btn btn-dark form-control" href="{% url 'pay:plan_detalis' p.id %}">تفاصيل</a>
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+
+
+{% endblock content %}

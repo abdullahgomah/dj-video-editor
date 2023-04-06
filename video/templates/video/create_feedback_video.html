@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+إنشاء فيديو | نموذج تقييم
+{% endblock title %}
+
+
+{% block content %}
+
+<h2>
+إنشاء فيديو | نموذج تقييم
+</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>الخلفية*</p>
+    <input type="file" name="background" class="form-control" required>
+    <br>
+    <p>الفيديو*</p>
+    <input type="file" name="video" class="form-control" required>
+    <br>
+    <input type="text" name="text" placeholder="النص" class="form-control" required>
+    <br>
+    <input type="text" name="fontsize" placeholder="حجم الخط" class="form-control" required>
+    <br>
+    <select class="form-select" name="video-res" aria-label="Default select example" required>
+        <option selected>اختر مقاس الفيديو</option>
+        <option value="facebook1">فيسبوك 1200x628</option>
+        <option value="facebook2">فيسبوك 810x450</option>
+        <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
+      </select>
+      <br>
+    <button type="submit" class="btn btn-success form-control">إنشاء</button>
+
+</form>
+
+{% endblock content %}

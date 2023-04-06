@@ -27,7 +27,8 @@ urlpatterns = [
     path('', include('pages.urls', namespace='pages')),
     path('video/', include('video.urls',namespace='video')), 
     path('image/', include('image.urls', namespace='image')),
-    path('audio/', include('audio.urls', namespace='audio'))
+    path('audio/', include('audio.urls', namespace='audio')),
+    path('pay/', include('pay.urls', namespace='pay')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

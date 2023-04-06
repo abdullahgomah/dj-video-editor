@@ -1,16 +1,7 @@
 from django import forms
-from .models import Project
 
 class UploadImageForm(forms.Form):
     files = forms.FileField(label='الصور', widget=forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control', 'accept': ".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"}))
-
-class CreateProjectForm(forms.ModelForm):
-    name = forms.CharField(label="", widget=forms.TextInput(attrs={'class': "form-control", "placeholder": "اسم المشروع"}))
-    audio = forms.FileField(label='ملف الصوت', widget=forms.ClearableFileInput(attrs={"accept": "audio/*", "class": "form-control"}))
-    class Meta:
-        model = Project
-        fields = '__all__'
-        exclude = ('images',)
 
 
 

@@ -1,8 +1,11 @@
 from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import redirect, render 
+from django.contrib.auth.decorators import login_required
 from .models import * 
-from .forms import UploadImageForm, CreateProjectForm, VideoTextForm
+from .forms import UploadImageForm, VideoTextForm
 from moviepy.editor import *
+from moviepy.video.fx.resize import resize
+
 from PIL import Image
 import numpy as np 
 import time 
@@ -19,104 +22,9 @@ import random
 
 # Create your views here.
 
-def all(request):
-    projects = Project.objects.all() 
-    context = {
-        'projects': projects,
-    } 
-    return render(request, 'video/all.html', context)
 
 
-def create_project(request):
-    if request.POST:
-        form = CreateProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save() 
-            return redirect(f'/video/project/{Project.objects.last().id}/')
-    else:
-        form = CreateProjectForm()
-    context = {
-        'form':form 
-    }
-    return render(request, 'video/create_project.html', context)
-
-
-def project(request, id):
-    video_text_form = VideoTextForm() 
-    project = Project.objects.get(id=id)
-    if request.POST:
-        form = UploadImageForm(request.POST, request.FILES)
-        files = request.FILES.getlist('files') 
-        for file in files: 
-            img = ImageList.objects.create(image=file)
-            project.images.add(img) 
-        # print(files) 
-
-        # print(form)
-        return redirect(f'/video/project/{project.id}/')
-    else:  
-        form = UploadImageForm()
-
-    # print(project.images.all())
-
-    context = {
-        'upload_form': form, 
-        'project': project, 
-        'video_text_form': video_text_form, 
-    }
-
-    return render(request, 'video/project.html', context)
-
-def upload(request):
-    form = UploadImageForm(request.POST, request.FILES)
-    if request.POST:
-        files = request.FILES.getlist('files')
-        for file in files:
-            ImageList.objects.create(image=file)
-
-
-    form = UploadImageForm()   
-    context = {
-        'form':form, 
-    }
-    return render(request, 'video/upload.html', context)
-
-
-def del_img(request, id):
-    next = request.POST.get('next', '/')
-    img = ImageList.objects.get(id=id)
-    img.delete()
-    return HttpResponseRedirect(next)
-
-
-
-def test_function(request, id):
-    project = Project.objects.get(id=id) 
-
-    imgs = project.images.all()
-
-
-    clips = []
-    textClips = [] 
-
-
-    for im in imgs:
-        img = Image.open(im.image)
-        im = ImageClip(np.array(img)).set_position(('center', 'center')).set_duration(request.POST.get('time_per_img'))
-        new_im = im.fx(vfx.resize, width=1000, height=1000)
-        
-        
-        clips.append(new_im)
-
-    
-    print(clips)
-
-    
-
-    return render(request, 'video/combine.html', {})
-
-
-
+@login_required
 def combine_images(request):
     if request.method == 'POST':
         # Get the uploaded images from the HTML form
@@ -191,7 +99,7 @@ def combine_images(request):
         return render(request, 'video/create_video.html')
 
 
-
+@login_required
 def remove_audio(request):
     if request.method == 'POST':
         video_file = request.FILES['video_file']
@@ -222,7 +130,7 @@ def remove_audio(request):
     return render(request, 'video/remove_audio.html')
 
 
-
+@login_required
 def change_speed(request):
     if request.method == 'POST':
         video_file = request.FILES['video_file']
@@ -258,6 +166,7 @@ def change_speed(request):
 
 
 ### إنشاء فيديو مع إضافة لوجو
+@login_required
 def combine_video_withlogo(request):
     if request.method == 'POST':
         # Get the input files from the HTML form
@@ -355,3 +264,96 @@ def combine_video_withlogo(request):
         return response
 
     return render(request, 'video/combine_video_withlogo.html')
+
+
+
+
+
+# هنا نموذج الفيديو الثالث
+
+@login_required
+def feedback_video_template(request):
+
+    if request.method == 'POST': 
+
+        video = request.FILES['video']
+        background = request.FILES['background']
+        text = request.POST['text']
+        res = request.POST.get('video-res') 
+        fontsize = request.POST.get('fontsize')
+
+        video = VideoFileClip(video.temporary_file_path())
+        duration = video.duration 
+
+
+
+        width = 0 
+        height = 0
+
+        if res=='facebook1':
+            width = 1200
+            height = 628 
+        elif res=='facebook2':
+            width = 810
+            height = 450
+        elif res == 'tiktok-snapchat':
+            width = 1080
+            height = 1920
+
+
+        ## Text Clip Here 
+        text_clip = TextClip(txt=text, fontsize=int(fontsize), color='gold').set_duration(video.duration).set_position('right', 'center')
+
+
+
+        img = ImageClip(background.temporary_file_path(), duration=duration)
+
+        # Resized Image
+        resized = resize(img, width=width) 
+        r_width, r_height = resized.size 
+
+        maskclip=ImageClip("mask1.png",ismask=True).set_duration(duration) 
+        m_width, m_height = maskclip.size 
+
+
+        # Resized Video 
+        resized_video = resize(video.set_position(("center", "center")), height=m_height)
+
+        resized_video = resized_video.set_mask(maskclip)
+
+        # top_text_clip = TextClip(txt="Ramadan Kareem", fontsize=20, color='white', size=((0, 0))).set_duration(duration).set_position('center', 'center')
+        # bottom_text_clip = TextClip(txt="Amazing Sales in Ramadan", fontsize=20, color='white', size=((0, 0))).set_duration(duration).set_position('center', 'center')
+
+        # t_text_width, t_text_height = top_text_clip.size 
+
+
+        # top_color_clip = ColorClip(size=(r_width, t_text_height+20), color=(0, 0, 0)).set_duration(duration).set_position("top", "center")
+        # bottom_color_clip = ColorClip(size=(r_width, t_text_height+20), color=(0, 0, 0)).set_duration(duration).set_position("center", "center")
+
+
+        # top_text_work_clip = CompositeVideoClip(clips=[top_color_clip, top_text_clip])
+        # bottom_text_work_clip = CompositeVideoClip(clips=[bottom_color_clip, bottom_text_clip])
+
+        # part1 = CompositeVideoClip(clips=[resized, top_text_work_clip])
+
+        # part2 = CompositeVideoClip([part1, bottom_text_work_clip.set_position("bottom", "center")])
+
+        final = CompositeVideoClip([img, resized_video.set_position((100, 'center'))], size=(width, height))
+        final2 = CompositeVideoClip([final, text_clip.set_position(((r_width - 100), 'center'))], size=(width, height)) 
+
+    
+        # top_text_work_clip.save_frame('out.png')
+
+        final2.write_videofile("out.mp4", fps=25)
+
+        ## DOWNLOAD FILE
+        with open('out.mp4', 'rb') as video:
+            response = HttpResponse(video.read(), content_type='video/mp4')
+            response['Content-Disposition'] = f'attachment; filename=output_video.mp4'
+
+        # Delete the temporary files
+        os.remove('out.mp4')
+
+        return response
+
+    return render(request, 'video/create_feedback_video.html', {})

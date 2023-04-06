@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'video', 
     'image',
-    'audio', 
+    'audio',
+    'pay',  
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,5 @@ LOGIN_URL = '/accounts/login'
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app']
 
+
+LOGIN_URL = '/accounts/login'
