@@ -31,6 +31,11 @@
 <div class="container">
   <h1>حسابك</h1>
   <p>قم بإدارة التفاصيل الخاصة بك، وعرض حالتك وكلمة المرور الخاصة بك</p>
+  <hr>
+  <div>
+    <h6>الباقة: {{subscription.plan}}</h6>
+    <h6>تاريخ الانتهاء: {{subscription.end_date_time}}</h6>
+  </div>
   <div class="public-information">
     <h2>معلومات عامة</h2>
     <form method="POST" enctype="multipart/form-data">

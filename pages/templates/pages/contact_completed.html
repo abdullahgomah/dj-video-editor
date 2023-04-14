@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+تم إرسال الرسالة
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .container {
+        height: calc(100vh - 100px); 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<center>
+    <h1>
+        تم إرسال رسالتك وسيتم التواصل معك قريباً
+    </h1>
+    <a href="{% url 'pages:index' %}" class="btn btn-dark">العودة للصفحة الرئيسية</a>
+</center>
+
+{% endblock content %}

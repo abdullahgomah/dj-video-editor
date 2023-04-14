@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-r(99a#r(5dm=9q%6kxr*j7&1d+k&q&i7rns@-b49692ip9o#)g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True 
 
-ALLOWED_HOSTS = ['web-production-3c10.up.railway.app', '*']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -159,7 +159,21 @@ CRISPY_TEMPLATE_PACK = "bootstrap"
 # LOGIN / LOGOUT URLS 
 LOGIN_URL = '/accounts/login'
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app']
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL =True
 
 
-LOGIN_URL = '/accounts/login'
+CSRF_TRUSTED_ORIGINS = ['https://web-production-3c10.up.railway.app', 'http://127.0.0.1']
+
+
+
+
+## Email Settings 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'videoeditor2mohammed@gmail.com'
+EMAIL_HOST_PASSWORD = "bxpfadwpvgqnvoso"

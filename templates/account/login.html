@@ -6,7 +6,19 @@
 {% block title %}{% trans "تسجيل دخول" %}{% endblock %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static './css/signup.css' %}">
+<style>
+
+  .form-heading {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+  }
+  
+  .form-heading a {
+    height: fit-content;
+  }
+
+</style>
 {% endblock stylesheet %}
 
 {% block content %}
@@ -21,11 +33,13 @@
 
       <div class="form-heading">
         <h2>تسجيل دخول</h2>
-        <a href="{{signup_url}}" class="btn btn-solid-dark">إنشاء حساب</a>
+        <a href="{{signup_url}}" class="btn btn-dark">إنشاء حساب</a>
       </div>
       
       {% csrf_token %}
-      {{form}}
+      <div class="fields">
+        {{form}}
+      </div>
 
 
       <br>
@@ -70,5 +84,15 @@
   {% endif %}
 
 </div>
+
+
+<script>
+  let formInputs = document.querySelectorAll('.fields input')
+  formInputs.forEach((e) => {
+    e.classList.add('form-control') 
+  })
+  formInputs[2].style.display='none'
+  formInputs[2].previousElementSibling.style.display='none'
+</script>
 
 {% endblock %}

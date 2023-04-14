@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+خطأ 404
+{% endblock title %}
+
+
+{% block content %}
+
+
+<style>
+    .container {
+        min-height: calc(100vh - 100px);
+        display:flex !important; 
+        justify-content: center;
+        align-items: center;
+    }
+    h1:first-of-type {
+        font-size: 100px; 
+    }
+</style>
+
+<center>
+    <h1>404</h1>
+    <h3>هذه الصفحة غير موجودة</h3>
+    <a href="{% url 'pages:index' %}" class="btn btn-dark">العودة للصفحة الرئيسية</a>
+</center>
+
+{% endblock content %}

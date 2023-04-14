@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+تواصل معنا
+{% endblock title %}
+
+
+{% block content %}
+
+    <div>
+        <h1>تواصل معنا</h1>
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="InputEmail1" class="form-label">البريد الإلكتروني</label>
+            <input type="email" name="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">أدخل البريد الإلكتروني المسجل في الموقع</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="Select" class="form-label">اختر الباقة</label>
+            <select id="Select" class="form-select" name="plan">
+                {% for plan in plans %}
+                    <option>{{plan}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="details" class="form-label" >تفاصيل</label>
+            <textarea id="details" class="form-control" name="details"></textarea>
+        </div>
+      
+
+        <button type="submit" class="btn btn-primary">طلب تفعيل</button>
+    </form>
+
+{% endblock content %}

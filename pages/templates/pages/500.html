@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+خطأ 500
+{% endblock title %}
+
+
+{% block content %}
+
+
+<style>
+    .container {
+        min-height: calc(100vh -100px) ;
+        display:flex !important; 
+        justify-content: center;
+        align-items: center;
+    }
+    h1:first-of-type {
+        font-size: 50px; 
+    }
+</style>
+
+<center>
+    <h1>500</h1>
+    <h3>حدث خطأ 😢</h3>
+    <a href="" class="btn btn-dark">العودة للصفحة الرئيسية</a>
+</center>
+
+{% endblock content %}

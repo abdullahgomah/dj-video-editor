@@ -1,13 +1,18 @@
-from django.shortcuts import render 
+from django.shortcuts import render, redirect
 from .forms import UserUpdateForm, UpdateProfileForm
 from .models import Profile  
 from django.contrib.auth.decorators import login_required
+from pay.models import Subscription
 
 # Create your views here.
 
 @login_required
 def profile(request):
     user = request.user 
+    try:
+        subscription = Subscription.objects.get(user=user)
+    except: 
+        return redirect('/pay/plans/') 
     profile = Profile.objects.get(user=user) 
     user_update = UserUpdateForm(instance=user)
     profile_update = UpdateProfileForm(instance=profile)
@@ -30,5 +35,6 @@ def profile(request):
     context = {
         'user_update': user_update,
         'profile_update': profile_update, 
+        'subscription': subscription,
     }
     return render(request, 'users/profile.html', context)

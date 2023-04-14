@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 import datetime
 # Create your models here.
 
-class plan (models.Model):
-    name=models.CharField(max_length=100)
-    price=models.IntegerField()
-    validaity=models.CharField(max_length=100)
+class Plan(models.Model):
+    name=models.CharField(max_length=100, verbose_name='اسم الباقة')
+    price=models.IntegerField(verbose_name="سعر الباقة")
+    validaity=models.CharField(max_length=100, verbose_name="دورة الباقة (30 يوم)")
+    unlimited=models.BooleanField(default=False, verbose_name='غير محدودة')
     
     def __str__(self):
         return self.name
@@ -15,27 +16,41 @@ class plan (models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    package = models.ForeignKey(plan, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now_add=True)
     end_date_time = models.DateField(blank=True, null=True)
+    videos_per_months = models.IntegerField(default=0)
 
-    def save(self):
-     if not self.end_date_time:
-         # (or do something with `self.period`?)
-         self.end_date_time = self.start_date+ datetime.timedelta(days=30)
-     elif self.package == "forever":
-         self.end_date_time = 9999-12-12
-     
+    # def save(self, *args, **kwargs ):
+    #     if not self.end_date_time:
+    #      # (or do something with `self.period`?)
+    #         self.end_date_time = datetime.datetime.strptime(self.start_date, "%YYYY-%MM-%DD") + datetime.timedelta(days=int(self.plan.validaity))
+    #     elif self.plan.unlimited == True:
+    #         self.end_date_time = 9999-12-12
+
+    #     super(Subscription, self).save(*args, **kwargs)
     
-    def str(self):
-        return f"{self.user.username}'s {self.package.name} subscription"
+    
+    def __str__(self):
+        return f"{self.user.username}'s {self.plan.name} subscription"
 
-class features(models.Model):
+class Feature(models.Model):
+    plan =models.OneToOneField(Plan, on_delete=models.CASCADE)
     numberVideos =models.IntegerField()
-    videoTemplates=models.IntegerField()
-    watermark= models.BooleanField()
-    plan =models.ForeignKey(plan, on_delete=models.CASCADE)
+    template1 = models.BooleanField(default=True, verbose_name="النموذج الأول") 
+    template2 = models.BooleanField(default=False, verbose_name="نموذج فيديو مع لوجو") 
+    template3 = models.BooleanField(default=False, verbose_name="نموذج تقييم") 
+
+    change_img_size = models.BooleanField(default=False, verbose_name="تغيير حجم الصور") 
+    remove_audio = models.BooleanField(default=False, verbose_name="إزالة الصوت من الفيديو")
+    change_video_speed = models.BooleanField(default=False, verbose_name="تغيير سرعة الفيديو") 
+    change_audio_speed = models.BooleanField(default=False, verbose_name="تغيير سرعة الصوت") 
+
+    watermark= models.BooleanField(default=True, verbose_name="العلامة المائية")
+
+    def __str__(self):
+        return f"{self.plan} Features"
 
 class PayPal(models.Model):
     PAYPAL_CLIENT_ID = models.CharField(max_length=255, blank=True, null=True)

@@ -33,12 +33,19 @@
                     </p>
                     {% endif %}
                   </h5>
-                <a href="" class="btn btn-lg btn-dark form-control mb-3">تواصل مع الدعم</a>
+                  <!-- تبقى هنا التحقق من أن الباقة مجانية أو لا -->
+                  {% if plans.price == 0 %}
+                    <a href="#" id="subscribe_button" class="btn btn-lg btn-dark form-control mb-3">اشترك في الباقة</a>
+                  {% else %}
+
+                <a href="{% url 'pages:contact' %}" class="btn btn-lg btn-dark form-control mb-3">تواصل مع الدعم</a>
                 <div id="smart-button-container">
                   <div style="text-align: center">
                     <div id="paypal-button-container"></div>
                   </div>
               </div>
+              {% endif %}
+
             </div>
           </div>
         
@@ -47,11 +54,56 @@
         <!-- <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}&currency={{paypal_info.PAYPAL_CURRENCY }}" data-namespace="paypal_sdk"></script> -->
 
         <!-- <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}&currency={{paypal_info.PAYPAL_CURRENCY}}" data-sdk-integration-source="button-factory" data-namespace="paypal_sdk"></script>​ -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 
-        <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}" data-namespace="paypal_sdk"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js" integrity="sha512-6DC1eE3AWg1bgitkoaRM1lhY98PxbMIbhgYCGV107aZlyzzvaWCW1nJW2vDuYQm06hXrW0As6OGKcIaAVWnHJw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
 
+          
+
+
+          let subscribeButton = document.querySelector('#subscribe_button')
+
+          $(subscribeButton).click(function () {
+
+            
+            const date = new Date(); 
+
+            let day = date.getDate(); 
+            let month = date.getMonth() + 1
+            let year = date.getFullYear() 
+
+
+            // Send Ajax Request 
+            $.ajax({
+              url: "{% url 'pay:create-subscription' %}", 
+              type: "POST",
+              data: {
+                'user': "{{user}}", 
+                'plan': "{{plans}}",
+                'start-date': `${day}-${month}-${year}`
+              },   
+              success: function(response) {
+                
+
+              }, error: function(xhr, status, error) {
+                console.log(error);
+              }
+            })
+            
+          } )
+
+
+
+            
+
+
+        </script>
+        {% if not plans.price == 0 %}
+        <script src="https://www.paypal.com/sdk/js?client-id={{paypal_info.PAYPAL_CLIENT_ID}}" data-namespace="paypal_sdk"></script>
+        <script>
+          
           function initPayPalButton() {
             paypal_sdk.Buttons({
                 style: {
@@ -83,11 +135,37 @@
                     );
 
                     // Show a success message within this page, e.g.
-                    const element = document.getElementById(
-                      "paypal-button-container"
-                    );
-                    element.innerHTML = "";
-                    element.innerHTML = "<h3>Thank you for your payment!</h3>";
+
+
+                    const date = new Date(); 
+
+                    let day = date.getDate(); 
+                    let month = date.getMonth() + 1
+                    let year = date.getFullYear() 
+
+
+                    // Send Ajax Request 
+                    $.ajax({
+                      url: "{% url 'pay:create-subscription' %}", 
+                      type: "POST",
+                      data: {
+                        'user': "{{user}}", 
+                        'plan': "{{plans}}",
+                        'start-date': `${day}-${month}-${year}`
+                      },  success: function(response) {
+                        console.log(response);
+                        const element = document.getElementById(
+                          "paypal-button-container"
+                        );
+                        element.innerHTML = "";
+                        element.innerHTML = "<h3>تم تفعيل اشتراكك</h3>";
+                      }, error: function(xhr, status, error) {
+                        console.log(error);
+                      }
+                    })
+
+
+
 
                     // Or go to another URL:  actions.redirect('thank_you.html');
                   });
@@ -101,6 +179,9 @@
           }
           initPayPalButton();
         </script>
+        {% endif %}
+
+
       </div>
     </div>
 
