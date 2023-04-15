@@ -13,7 +13,7 @@
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         <p>الفيديو*</p>
-        <input type="file" name="video_file" class="form-control">
+        <input type="file" name="video_file" class="form-control" accept="video/*">
 
         <br>
         <p>سرعة الفيديو*</p>

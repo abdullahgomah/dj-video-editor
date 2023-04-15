@@ -13,11 +13,11 @@
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>الخلفية*</p>
-    <input type="file" name="background" class="form-control" required>
+    <p>الخلفية*</p> 
+    <input type="file" name="background" accept="image/*" class="form-control" required>
     <br>
     <p>الفيديو*</p>
-    <input type="file" name="video" class="form-control" required>
+    <input type="file" name="video" accept="video/*" class="form-control" required>
     <br>
     <input type="text" name="text" placeholder="النص" class="form-control" required>
     <br>

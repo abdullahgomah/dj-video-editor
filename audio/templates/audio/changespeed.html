@@ -13,7 +13,7 @@
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         <p>الصوت*</p>
-        <input type="file" name="audio_file" class="form-control">
+        <input type="file" name="audio_file" accept="audio/*" class="form-control">
 
         <br>
         <p>سرعة الفيديو*</p>

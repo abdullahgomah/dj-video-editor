@@ -41,6 +41,7 @@ def create_subscription(request):
 
         user = request.POST.get ('user') 
         plan = request.POST.get('plan') 
+
         start_date = request.POST.get('start-date') 
 
         selected_plan = Plan.objects.get(name=plan)
@@ -55,7 +56,7 @@ def create_subscription(request):
             end_date_time = start_date + datetime.timedelta(days=int(selected_plan.validaity))
 
 
-        Subscription.objects.create(user=user_object, start_date=start_date, plan=selected_plan, end_date_time=end_date_time)
+        Subscription.objects.create(user=user_object, start_date=start_date, plan=selected_plan, end_date_time=end_date_time, videos_per_months=selected_plan.videos_per_months)
         return redirect('/') 
         
 

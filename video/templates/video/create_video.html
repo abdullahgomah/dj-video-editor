@@ -12,10 +12,10 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <p>الصور*</p>
-    <input type="file" name="images" multiple class="form-control" required>
+    <input type="file" name="images" accept="image/*" multiple class="form-control" required>
     <br>
     <p>الصوت*</p>
-    <input type="file" name="audio" class="form-control" required>
+    <input type="file" name="audio" accept="audio/*" class="form-control" required>
     <br>
     <input type="text" name="top_text" placeholder="النص العلوي" class="form-control" required>
     <br>

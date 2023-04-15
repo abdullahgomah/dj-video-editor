@@ -9,6 +9,7 @@ class Plan(models.Model):
     price=models.IntegerField(verbose_name="سعر الباقة")
     validaity=models.CharField(max_length=100, verbose_name="دورة الباقة (30 يوم)")
     unlimited=models.BooleanField(default=False, verbose_name='غير محدودة')
+    videos_per_months = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
@@ -34,6 +35,7 @@ class Subscription(models.Model):
     
     def __str__(self):
         return f"{self.user.username}'s {self.plan.name} subscription"
+
 
 class Feature(models.Model):
     plan =models.OneToOneField(Plan, on_delete=models.CASCADE)
