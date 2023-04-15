@@ -21,12 +21,14 @@ import random
 import datetime 
 from pay.models import Subscription, Feature
 
+import arabic_reshaper # pip install arabic-reshaper
+from bidi.algorithm import get_display # pip install python-bidi
 
 # Create your views here.
 
 font_path = 'Cairo-Regular.ttf'
 
-
+new_font = 'Lalezar-Regular.ttf' 
 
 
 
@@ -87,7 +89,7 @@ def combine_images(request):
 
             width = 0 
             height = 0
-            font_size = 20
+            font_size = 30
 
             if res=='facebook1':
                 width = 1200
@@ -98,10 +100,11 @@ def combine_images(request):
             elif res == 'tiktok-snapchat':
                 width = 1080
                 height = 1920
-                font_size = 40 
+                font_size = 50 
             elif res == 'square':
                 width = 1080   
                 height = 1080
+                font_size = 60
 
             # Create a list of image paths
             image_paths = []
@@ -111,8 +114,40 @@ def combine_images(request):
             # Create a video clip from the images using MoviePy
             clips = [ImageClip(img_path).set_position("center", 'center').fx(vfx.resize, width=width).set_duration(time_per_img) for img_path in image_paths]
 
-            top_text_clip = TextClip(txt=str(request.POST.get("top_text")), fontsize=font_size).set_duration(time_per_img)
-            bottom_text_clip = TextClip(txt=str(request.POST.get("bottom_text")), fontsize=font_size ).set_duration(time_per_img)
+            # top_text = arabic_reshaper.reshape(request.POST.get('top_text'))
+            top_text = request.POST.get('top_text')
+            formated_top_text = []  
+            for word in top_text.split(' '):
+                formated_top_text.append(arabic_reshaper.reshape(word))
+
+            top_text = ''.join(top_text) 
+             
+            
+            # bottom_text = arabic_reshaper.reshape(request.POST.get('bottom_text')) 
+            bottom_text = request.POST.get('bottom_text') 
+            formated_bottom_text = []  
+            for word in bottom_text.split(' '):
+                formated_bottom_text.append(arabic_reshaper.reshape(word)) 
+
+            bottom_text = ''.join(bottom_text) 
+
+
+            # for word in request.POST.get('top_text').split(' '):
+            #     formated = arabic_reshaper.reshape(word)
+            #     formated_to_display = get_display(formated)
+            #     top_text.append(formated_to_display)
+
+            # for word in request.POST.get('bottom_text').split(' '):
+            #     formated = arabic_reshaper.reshape(word) 
+            #     formated_to_display = get_display(formated) 
+            #     bottom_text.append(formated_to_display)
+
+            # top_text.reverse() 
+            # bottom_text.reverse() 
+
+            top_text_clip = TextClip(txt=str((top_text)), fontsize=font_size, font=new_font).set_duration(time_per_img)
+            bottom_text_clip = TextClip(txt=str((bottom_text)), fontsize=font_size, font=new_font ).set_duration(time_per_img)
+
 
             watermark = TextClip(txt='Video Editor', font=font_path, fontsize=30).set_opacity(.5).set_position(('center', 'center')).set_duration(time_per_img)
 
@@ -326,8 +361,8 @@ def combine_video_withlogo(request):
             audio = request.FILES['audio_file']
             logo = request.FILES['logo_file']
             tpi = request.POST['time_per_img']
-            top_text = request.POST['top_text']
-            bottom_text = request.POST['bottom_text']
+            top_text = arabic_reshaper.reshape(request.POST['top_text'])
+            bottom_text = arabic_reshaper.reshape(request.POST['bottom_text']) 
 
             # Create a random filename for the output video
             filename = str(''.join(random.choices(string.ascii_uppercase + string.digits, k=10)) + '.mp4')
@@ -389,8 +424,8 @@ def combine_video_withlogo(request):
 
 
 
-            top_text_clip = TextClip(txt=str(request.POST.get("top_text")), font=font_path ,fontsize=font_size, color='white').set_duration(tpi)
-            bottom_text_clip = TextClip(txt=str(request.POST.get("bottom_text")), font=font_path ,fontsize=font_size ,color='white').set_duration(tpi)
+            top_text_clip = TextClip(txt=str(top_text), font=font_path ,fontsize=font_size, color='white').set_duration(tpi)
+            bottom_text_clip = TextClip(txt=str(bottom_text), font=font_path ,fontsize=font_size ,color='white').set_duration(tpi)
             
             top_text_width, top_text_height = top_text_clip.size 
             bottom_text_width, bottom_text_height = bottom_text_clip.size 
