@@ -39,7 +39,7 @@ class Subscription(models.Model):
 
 class Feature(models.Model):
     plan =models.OneToOneField(Plan, on_delete=models.CASCADE)
-    numberVideos =models.IntegerField()
+    # numberVideos =models.IntegerField()
     template1 = models.BooleanField(default=True, verbose_name="النموذج الأول") 
     template2 = models.BooleanField(default=False, verbose_name="نموذج فيديو مع لوجو") 
     template3 = models.BooleanField(default=False, verbose_name="نموذج تقييم") 

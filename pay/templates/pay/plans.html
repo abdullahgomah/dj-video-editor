@@ -29,7 +29,6 @@
    <div class="container head mt-5">
     <div class="row">
       <h1> الباقات </h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure voluptas recusandae commodi perferendis repellendus, nesciunt voluptates libero beatae a vero at nihil ut aut ducimus dolor animi enim. Accusantium, voluptatem.
       </p>
     </div>
    </div>
@@ -49,7 +48,7 @@
             
               {% for feature in features %}
                 {% if feature.plan.name == p.name %}
-                  <p class="card-text">{{feature.numberVideos}} فيديوهات </p>  
+                  <p class="card-text">{{feature.plan.videos_per_months}} فيديوهات </p>  
 
                   {% if feature.watermark == 0 %}
 
@@ -64,6 +63,85 @@
                      بدون علامة مائية
                   </p>
                   {% endif %}
+
+		{% if feature.template1 == 0 %}
+		<p>
+		<i class='fa-regular fa-circle-check' style='color: #ff0000'  > نموذج فيديو عادي </i>
+		</p>
+		{% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > نموذج فيديو عادي</i>
+                </p>
+		{% endif %}
+
+
+
+                {% if feature.template2 == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > نموذج فيديو مع لوجو</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > نموذج فيديو مع لوجو</i>
+                </p>
+                {% endif %}
+
+
+
+                {% if feature.template3 == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > نموذج فيديو تقييم</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > نموذج فيديو تقييم</i>
+                </p>
+                {% endif %}
+
+
+                {% if feature.change_img_size == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > تغيير حجم الصور</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > تغيير حجم الصور</i>
+                </p>
+                {% endif %}
+
+
+                {% if feature.remove_audio == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > إزالة الصوت من الفيديو</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > إزالة الصوت من الفيديو</i>
+                </p>
+                {% endif %}
+
+
+
+                {% if feature.change_video_speed == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > تغيير سرعة الفيديو</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > تغيير سرعة الفيديو</i>
+                </p>
+                {% endif %}
+
+
+                {% if feature.change_audio_speed == 0 %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #ff0000' > تغيير سرعة الصوت</i>
+                </p>
+                {% else %}
+                <p>
+                <i class='fa-regular fa-circle-check' style='color: #008040' > تغيير سرعة الصوت</i>
+                </p>
+                {% endif %}
 
 
                 {% endif %}

@@ -10,7 +10,12 @@
 <h2>إنشاء فيديو مع لوجو</h2>
 
 <form method="POST" enctype="multipart/form-data">
+  <div class="row">
+
     {% csrf_token %}
+
+    <div class="col-sm-6">
+
     <p>الصور*</p>
     <input type="file" name="image_files" multiple class="form-control" accept="image/*" required>
     <br>
@@ -34,6 +39,16 @@
         <option value="square">مربع 1080×1080</option>
       </select>
       <br>
+    </div>
+
+      <div class="col-sm-6">
+      <h3>إعدادات شاشة النهاية</h3>
+        <input type="text" placeholder="نص شاشة النهاية" class="form-control" name="end_screen_text">
+        <br>
+        <input type="text" placeholder="الرابط (ضع مسافة في حال لا يوجد رابط)" class="form-control" name="end_screen_url">
+      </div>
+    
+  </div>
     <button type="submit" class="btn btn-success form-control">إنشاء</button>
 
 </form>

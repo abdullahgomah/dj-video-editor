@@ -34,6 +34,7 @@
                     {% endif %}
                   </h5>
                   <!-- تبقى هنا التحقق من أن الباقة مجانية أو لا -->
+	          {% if not subscriped == "True" %}
                   {% if plans.price == 0 %}
                     <a href="#" id="subscribe_button" class="btn btn-lg btn-dark form-control mb-3">اشترك في الباقة</a>
                   {% else %}
@@ -44,6 +45,7 @@
                     <div id="paypal-button-container"></div>
                   </div>
               </div>
+              {% endif %}
               {% endif %}
 
             </div>

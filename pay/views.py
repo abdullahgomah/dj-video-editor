@@ -10,6 +10,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 # detail of plan
 
+
+def videos_limit_end(request):
+    return render(request, 'pay/videos_end.html', {})
+
+
 def plans(request):
     plans = Plan.objects.all()
     feature_obj = Feature.objects.all()
@@ -21,6 +26,17 @@ def plans(request):
 
 
 def plan_details(request, id):
+    try:
+        user = request.user 
+    except:
+        pass 
+
+    try: 
+        subscription = Subscription.objects.get(user=user)
+        subscriped = "True"
+    except:
+        subscriped = "False"
+
     feature=Feature.objects.get(id=id)
     plans = Plan.objects.get(id=id)
     paypal_info = PayPal.objects.last()
@@ -28,6 +44,7 @@ def plan_details(request, id):
         "plans":plans,
         "feature": feature,
         "paypal_info":paypal_info,
+        "subscriped": subscriped,
     }
  
     return render (request, 'pay/plan_details.html' , context) 
