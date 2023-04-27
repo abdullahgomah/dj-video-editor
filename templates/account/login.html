@@ -8,6 +8,20 @@
 {% block stylesheet %}
 <style>
 
+  .container {
+    min-height: calc(100vh - 100px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: red; */
+    max-width: 600px;
+  }
+
+
+  form {
+    width: 100%;
+  }
+
   .form-heading {
     display: flex;
     justify-content: space-between;
@@ -16,6 +30,15 @@
   
   .form-heading a {
     height: fit-content;
+  }
+  
+  form .fields label {
+    display: none;
+  }
+
+  .cta a {
+    display: block;
+    margin-top: .5rem;
   }
 
 </style>
@@ -38,7 +61,7 @@
       
       {% csrf_token %}
       <div class="fields">
-        {{form}}
+        {{form.as_p}}
       </div>
 
 
@@ -51,11 +74,11 @@
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}
       <!-- <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> -->
-      <a class="button secondaryAction" href="{% url 'account_reset_password' %}">هل نسيت كلمة السر؟</a>
       <br>
       <!-- <button class="primaryAction btn btn-solid-dark" type="submit">{% trans "Sign In" %}</button> -->
       <div class="cta">
         <button class="primaryAction btn btn-dark" type="submit">تسجيل دخول</button>
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">هل نسيت كلمة السر؟</a>
       </div>
 
       {% if messages %}
@@ -71,17 +94,17 @@
 
 
   </form>
-
+<!-- 
   {% if messages %}
   <div>
-    <!-- <strong>Messages:</strong> -->
+    <strong>Messages:</strong
     <ul>
       {% for message in messages %}
       <li>{{message}}</li>
       {% endfor %}
     </ul>
   </div>
-  {% endif %}
+  {% endif %} -->
 
 </div>
 
@@ -93,6 +116,13 @@
   })
   formInputs[2].style.display='none'
   formInputs[2].previousElementSibling.style.display='none'
+
+
+  
+  document.querySelector('#id_login').setAttribute('placeholder', 'اسم المستخدم') 
+  document.querySelector('#id_password').setAttribute('placeholder', 'كلمة السر') 
+  
+    
 </script>
 
 {% endblock %}

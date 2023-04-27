@@ -38,29 +38,30 @@
   </div>
   <div class="public-information">
     <h2>معلومات عامة</h2>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="info">
-          <div>
-            {{user_update.username|as_crispy_field}}
-          </div>
-          <br>
-          <div>
-            {{user_update.email|as_crispy_field}}
-          </div>
-          <br>
-          <div>
-            {{user_update.first_name|as_crispy_field}}
-          </div>
-          <br>
-          <div>
-            {{user_update.last_name|as_crispy_field}}
-          </div>
-          <br>
-          <div>
-            {{profile_update.image|as_crispy_field}}
-          </div>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          {{user_update.username|as_crispy_field}}
         </div>
+        <div class="col-sm-6">
+          {{user_update.email|as_crispy_field}}
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-sm-6">
+          {{user_update.first_name|as_crispy_field}}
+        </div>
+        <div class="col-sm-6">
+          {{user_update.last_name|as_crispy_field}}
+        </div>
+      </div>
+    </div>
+
         <br>
         <div class="grid">
           <div class="item" style="display: flex; justify-content: space-between; width: 100%;">
@@ -75,20 +76,6 @@
       <br>
       <!-- <a href="#" class="btn btn-solid-dark">تحديث المعلومات</a> -->
   </div>
-  <!-- <div class="security">
-    <h2>الحماية</h2>
-      <div class="info">
-        <div>
-          <h3>البريد الالكتروني</h3>
-          <input type="text" placeholder="ادخل البريد الالكتروني">
-        </div>
-        <div>
-          <h3>كلمة السر</h3>
-          <input type="text" placeholder="ادخل كلمة السر">
-        </div>
-      </div>
-    <a href="" class="update" id="upd"> تغيير كلمة المرور</a>
-    <a href="#" class="delete">حذف الحساب</a>
-  </div> -->
+
 </div>
 {% endblock %}

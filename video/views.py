@@ -24,6 +24,9 @@ from pay.models import Subscription, Feature
 import arabic_reshaper # pip install arabic-reshaper
 from bidi.algorithm import get_display # pip install python-bidi
 
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 # Create your views here.
 
 font_path = 'Cairo-Regular.ttf'
@@ -80,7 +83,7 @@ def combine_images(request):
 
             audio_clip = AudioFileClip(audio.temporary_file_path()) 
 
-            audio_file = afx.audio_loop(audio_clip, duration=(len(images)* time_per_img))
+            audio_file = afx.audio_loop(audio_clip, duration=((len(images) + 1)* time_per_img))
 
             res = request.POST.get('video-res') 
 
@@ -112,7 +115,30 @@ def combine_images(request):
                 image_paths.append(img.temporary_file_path())
 
             # Create a video clip from the images using MoviePy
-            clips = [ImageClip(img_path).set_position("center", 'center').fx(vfx.resize, width=width).set_duration(time_per_img) for img_path in image_paths]
+            # clips = [ImageClip(img_path).set_position("center", 'center').fx(vfx.resize, width=width).set_duration(time_per_img) for img_path in image_paths]
+            
+            clips =[] 
+
+            # for img in image_paths:
+            #     img = ImageClip(img).set_position('center', 'center').fx(vfx.resize, width=width).set_duration(time_per_img) 
+            #     new_img = resize(img, height=height)
+            #     new_img = new_img.fx(vfx.fadein, duration=.4)
+            #     new_img = new_img.fx(transfx.slide_out, duration=.5, side='right')
+            #     # new_img = new_img.resize(lambda t: 1 + 0.04 * t)  # Zoom-in effect
+            #     clips.append(new_img)
+
+
+            for img in image_paths:
+                img = ImageClip(img).set_position('center', 'center').set_duration(time_per_img)
+                if img.size[0] == img.size[1] and res=='tiktok-snapchat':
+                    new_img = img.fx(vfx.resize, height=height)
+                else:
+                    new_img = img.fx(vfx.resize, height=height)
+                    new_img = resize(img, width=width)
+                # new_img = new_img.fx(vfx.fadeout, duration=.35)
+                # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
+                new_img = new_img.resize(lambda t: 0.85 + 0.18 * t)  # Zoom-in effect
+                clips.append(new_img)
 
             # top_text = arabic_reshaper.reshape(request.POST.get('top_text'))
             top_text = request.POST.get('top_text')
@@ -132,21 +158,20 @@ def combine_images(request):
             bottom_text = ''.join(bottom_text) 
 
 
-            # for word in request.POST.get('top_text').split(' '):
-            #     formated = arabic_reshaper.reshape(word)
-            #     formated_to_display = get_display(formated)
-            #     top_text.append(formated_to_display)
+            top_text_clip = TextClip(txt=str(top_text), font=font_path ,fontsize=font_size, color='white').set_duration(time_per_img)
+            bottom_text_clip = TextClip(txt=str(bottom_text), font=font_path ,fontsize=font_size ,color='white').set_duration(time_per_img)
+            
+            top_text_width, top_text_height = top_text_clip.size 
+            bottom_text_width, bottom_text_height = bottom_text_clip.size 
+            
+            top_color_clip = ColorClip(size=(width, top_text_height+20), color=(0, 0, 0)).set_duration(time_per_img).set_position("top", "center")
+            bottom_color_clip = ColorClip(size=(width, bottom_text_height+20), color=(0, 0, 0)).set_duration(time_per_img).set_position("center", "center")
 
-            # for word in request.POST.get('bottom_text').split(' '):
-            #     formated = arabic_reshaper.reshape(word) 
-            #     formated_to_display = get_display(formated) 
-            #     bottom_text.append(formated_to_display)
+            final_top_text_clip = CompositeVideoClip(clips=[top_color_clip, top_text_clip.set_position("center", "center")])
+            final_bottom_text_clip = CompositeVideoClip(clips=[bottom_color_clip, bottom_text_clip.set_position("center", "center")])
 
-            # top_text.reverse() 
-            # bottom_text.reverse() 
 
-            top_text_clip = TextClip(txt=str((top_text)), fontsize=font_size, font=new_font).set_duration(time_per_img)
-            bottom_text_clip = TextClip(txt=str((bottom_text)), fontsize=font_size, font=new_font ).set_duration(time_per_img)
+
 
 
             watermark = TextClip(txt='Video Editor', font=font_path, fontsize=30).set_opacity(.5).set_position(('center', 'center')).set_duration(time_per_img)
@@ -158,18 +183,31 @@ def combine_images(request):
 
             if subscription.plan.price == 0: 
                 for clip in clips:
-                    composite_clip = CompositeVideoClip([clip, top_text_clip.set_position('top', 'center'), bottom_text_clip.set_position('bottom', 'center'), watermark], size=(width, height) )
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_position('top', 'center'), final_bottom_text_clip.set_position('bottom', 'center'), watermark], size=(width, height) )
                     # final_composite_clip = CompositeVideoClip([composite_clip, TextClip(txt='Video Editor', font=font_path, fontsize=30).set_position('center', 'center')])
                     composite_clips.append(composite_clip)
             
             else: 
 
                 for clip in clips:
-                    composite_clip = CompositeVideoClip([clip, top_text_clip.set_position('top', 'center'), bottom_text_clip.set_position('bottom', 'center')], size=(width, height))
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_position('top', 'center'), final_bottom_text_clip.set_position('bottom', 'center')], size=(width, height))
                     composite_clips.append(composite_clip)
 
 
-            video = concatenate_videoclips(composite_clips, method="compose").set_audio(audio_file)
+            end_screen = ColorClip(size=(width, height), color=(0, 0, 0)).set_duration(time_per_img).set_position("center", "center") 
+
+            end_screen_text = TextClip(txt='شاشة النهاية', color='white', font=font_path, fontsize=50).set_position(("center", "center")).set_duration(time_per_img) 
+            end_screen_url = TextClip(txt='http://www.google.com', fontsize=30, color='black', font=font_path).set_duration(time_per_img)
+            end_screen_url_color_clip = ColorClip(color=(255, 255, 255), size=(end_screen_url.size[0]+10, end_screen_url.size[1]+20)).set_duration(time_per_img)
+            
+            end_url_clip = CompositeVideoClip([end_screen_url_color_clip, end_screen_url.set_position(('center', "center"))]) 
+            end_url_clip= end_url_clip.fx(transfx.slide_in, duration=1, side='left')
+
+            end_clip = CompositeVideoClip([end_screen, end_screen_text, end_url_clip.set_position(("center", ((height / 2) + 40)))])
+
+            composite_clips.append(end_clip) 
+
+            video = concatenate_videoclips(composite_clips, method="chain").set_audio(audio_file)
 
             # Set the video file name and path
             video_file_name = 'my_video.mp4'
@@ -177,7 +215,7 @@ def combine_images(request):
 
             # Write the video file to disk
             # video.write_videofile(video_file_path, codec='libx264')
-            video.write_videofile(video_file_path, fps=24)
+            video.write_videofile(video_file_path, fps=30)
 
             # Open the video file and create an HTTP response with the file contents
             with open(video_file_path, 'rb') as f:
@@ -410,17 +448,31 @@ def combine_video_withlogo(request):
             # image_clips = [ImageClip(img_path, duration=int(tpi)) for img_path in image_paths]
             # image_clips = [ImageClip(img_path).set_position("center", 'center').fx(vfx.resize, height=height).set_duration(tpi) for img_path in image_paths]
 
-            for img_path in image_paths: 
-                img = ImageClip(img_path) 
-                # print(img.size) 
+            # for img_path in image_paths: 
+            #     img = ImageClip(img_path) 
+            #     # print(img.size) 
                 
-                # if img.size[0] < img.size[1]:
-                new_img = img.set_position("center", 'center').fx(vfx.resize, width=width).set_duration(tpi)
-                final_img = resize(new_img, height=height)
-                # elif img.size[1] < img.size[0]:
-                # new_img = new_img.fx(vfx.resize, height=height)
+            #     # if img.size[0] < img.size[1]:
+            #     new_img = img.set_position("center", 'center').fx(vfx.resize, width=width).set_duration(tpi)
+            #     final_img = resize(new_img, height=height)
+            #     # elif img.size[1] < img.size[0]:
+            #     # new_img = new_img.fx(vfx.resize, height=height)
                 
-                image_clips.append(final_img)
+            #     image_clips.append(final_img)
+
+
+
+            for img in image_paths:
+                img = ImageClip(img).set_position('center', 'center').set_duration(tpi)
+                if img.size[0] == img.size[1] and res=='tiktok-snapchat':
+                    new_img = img.fx(vfx.resize, height=height)
+                else:
+                    new_img = img.fx(vfx.resize, height=height)
+                    new_img = resize(img, width=width)
+                # new_img = new_img.fx(vfx.fadeout, duration=.35)
+                # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
+                new_img = new_img.resize(lambda t: 0.85 + 0.18 * t)  # Zoom-in effect
+                image_clips.append(new_img)
 
 
 
@@ -454,17 +506,20 @@ def combine_video_withlogo(request):
                     composite_clips.append(composite_clip)
 
             # Concatenate the image clips into a video clip
-            video_clip = concatenate_videoclips(composite_clips, method='compose').set_audio(audio_file)
+            video_clip = concatenate_videoclips(composite_clips, method='chain').set_audio(audio_file)
 
 
             # Load the logo image using moviepy
-            logo_clip = ImageClip('temp_logo.png', transparent=True).set_duration(video_clip.duration).resize(height=110) 
+            logo_clip = ImageClip('temp_logo.png', transparent=True).set_duration(video_clip.duration).resize(height=top_text_height+10) 
 
             # Add the logo to the video clip
             video_clip = CompositeVideoClip([video_clip, logo_clip.set_position((10, 10))])
 
+            # final = concatenate_videoclips([video_clip], method='chain')
+            
+
             # Save the final video to the output file
-            video_clip.write_videofile(filename, fps=25)
+            video_clip.write_videofile(filename, fps=25, threads=10, preset='veryfast', codec='libx264')
 
             # Serve the video file for download
             with open(filename, 'rb') as video:
@@ -564,9 +619,10 @@ def feedback_video_template(request):
 
 
             img = ImageClip(background.temporary_file_path(), duration=duration)
+            img = img.fx(vfx.resize, width=width)
 
             # Resized Image
-            resized = resize(img.set_position(('center', 'center')), width=width) 
+            resized = resize(img.set_position(('center', 'center')), height=height) 
             r_width, r_height = resized.size 
 
 
