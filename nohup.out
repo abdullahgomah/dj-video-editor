@@ -14273,3 +14273,22 @@ April 27, 2023 - 10:46:03
 Django version 4.1.7, using settings 'project.settings'
 Starting development server at http://0.0.0.0:8000/
 Quit the server with CONTROL-C.
+[27/Apr/2023 10:47:14] "GET / HTTP/1.1" 200 7614
+[27/Apr/2023 10:51:36] "GET / HTTP/1.1" 200 8090
+[27/Apr/2023 10:51:36] "GET /static/images/Screenshot-Facebook.jpg HTTP/1.1" 200 197224
+[27/Apr/2023 10:51:37] "GET /static/images/video-withlogo-cover.jpg HTTP/1.1" 200 198544
+[27/Apr/2023 10:51:39] "GET /accounts/profile/ HTTP/1.1" 302 0
+[27/Apr/2023 10:51:40] "GET /pay/plans/ HTTP/1.1" 200 11451
+[27/Apr/2023 10:51:43] "GET /video/createvideo/ HTTP/1.1" 302 0
+[27/Apr/2023 10:51:43] "GET /pay/plans HTTP/1.1" 301 0
+[27/Apr/2023 10:51:43] "GET /pay/plans/ HTTP/1.1" 200 11451
+[27/Apr/2023 10:51:48] "GET /accounts/logout/ HTTP/1.1" 200 4587
+[27/Apr/2023 10:51:50] "POST /accounts/logout/ HTTP/1.1" 302 0
+[27/Apr/2023 10:51:50] "GET / HTTP/1.1" 200 7614
+[27/Apr/2023 10:51:51] "GET /accounts/login/ HTTP/1.1" 200 6667
+[27/Apr/2023 10:51:52] "GET /accounts/signup/ HTTP/1.1" 200 6731
+Profile Created !!
+[27/Apr/2023 10:52:04] "POST /accounts/signup/ HTTP/1.1" 302 0
+[27/Apr/2023 10:52:04] "GET /accounts/profile/ HTTP/1.1" 302 0
+[27/Apr/2023 10:52:04] "GET /pay/plans/ HTTP/1.1" 200 11451
+[27/Apr/2023 10:52:06] "GET / HTTP/1.1" 200 8090
