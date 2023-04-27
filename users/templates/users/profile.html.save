@@ -35,7 +35,7 @@
   <div>
     <h6>الباقة: {{subscription.plan}}</h6>
     <h6>تاريخ الانتهاء: {{subscription.end_date_time}}</h6>
-    <h6>الفيديوهات المتبقية: {{subscription.videos_per_months}}</h6>
+    <h6>عدد الفيديوهات المتبقية: {{subscription.videos_per_months}}</h6>
   </div>
   <div class="public-information">
     <h2>معلومات عامة</h2>
@@ -79,18 +79,5 @@
   </div>
 
 </div>
-
-
-<script>
-
-
-document.querySelector('#id_username').setAttribute('placeholder', 'اسم المستخدم')
-document.querySelector('#id_email').setAttribute('placeholder', 'البريد الإلكتروني') 
-document.querySelector('#id_first_name').setAttribute('placeholder', 'الاسم الأول') 
-document.querySelector('#id_last_name').setAttribute('placeholder', 'الاسم الأخير') 
-
-</script>
-
-
 {% endblock %}
 
