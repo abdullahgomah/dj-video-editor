@@ -112,7 +112,7 @@ def combine_images(request):
                 #text_to_display = get_display(formated) 
                 formated_end_text.append(formated)
 
-            end_text = get_display(' '.join(formated_top_text) )
+            end_text = get_display(' '.join(formated_end_text) )
              
 
 
@@ -122,7 +122,7 @@ def combine_images(request):
                 #text_to_display = get_display(formated) 
                 formated_end_url.append(formated)
 
-            end_url = get_display(' '.join(formated_top_text) )
+            end_url = get_display(' '.join(formated_end_url) )
 
             ### color clips here
 
@@ -452,6 +452,25 @@ def combine_video_withlogo(request):
             end_text = request.POST.get('end_screen_text')
             end_url = request.POST.get('end_screen_url') 
 
+
+            formated_end_text = []  
+            for word in end_text.split(' '):
+                formated = reshaper.reshape(word)
+                #text_to_display = get_display(formated) 
+                formated_end_text.append(formated)
+
+            end_text = get_display(' '.join(formated_end_text) )
+             
+
+
+            formated_end_url = []  
+            for word in end_url.split(' '):
+                formated = reshaper.reshape(word)
+                #text_to_display = get_display(formated) 
+                formated_end_url.append(formated)
+
+            end_url = get_display(' '.join(formated_end_url) )
+
             # Create a random filename for the output video
             filename = str(''.join(random.choices(string.ascii_uppercase + string.digits, k=10)) + '.mp4')
 
@@ -583,8 +602,8 @@ def combine_video_withlogo(request):
 
             end_screen = ColorClip(size=(width, height), color=(0, 0, 0)).set_duration(tpi).set_position("center", "center") 
 
-            end_screen_text = TextClip(txt=get_display(reshaper.reshape(end_text)), color='white', font=font_path, fontsize=50).set_position(("center", "center")).set_duration(tpi) 
-            end_screen_url = TextClip(txt=get_display(reshaper.reshape(end_url)), fontsize=30, color='black', font=font_path).set_duration(tpi)
+            end_screen_text = TextClip(txt=end_text, color='white', font=font_path, fontsize=50).set_position(("center", "center")).set_duration(tpi) 
+            end_screen_url = TextClip(txt=end_url, fontsize=30, color='black', font=font_path).set_duration(tpi)
             end_screen_url_color_clip = ColorClip(color=(255, 255, 255), size=(end_screen_url.size[0]+10, end_screen_url.size[1]+20)).set_duration(tpi)
             
             end_url_clip = CompositeVideoClip([end_screen_url_color_clip, end_screen_url.set_position(('center', "center"))]) 
