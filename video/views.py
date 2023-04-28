@@ -112,7 +112,7 @@ def combine_images(request):
                 #text_to_display = get_display(formated) 
                 formated_end_text.append(formated)
 
-            end_text = get_display(' '.join(formated_top_text) )
+            end_text = get_display(' '.join(formated_end_text) )
              
 
 
@@ -122,7 +122,7 @@ def combine_images(request):
                 #text_to_display = get_display(formated) 
                 formated_end_url.append(formated)
 
-            end_url = get_display(' '.join(formated_top_text) )
+            end_url = get_display(' '.join(formated_end_url) )
 
             ### color clips here
 
