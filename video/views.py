@@ -785,7 +785,7 @@ def feedback_video_template(request):
         
             # top_text_work_clip.save_frame('out.png')
 
-            final2.write_videofile("out.mp4", fps=25)
+            final2.write_videofile("out.mp4", fps=25, threads=10, preset='veryfast', codec='libx264')
 
             ## DOWNLOAD FILE
             with open('out.mp4', 'rb') as video:
