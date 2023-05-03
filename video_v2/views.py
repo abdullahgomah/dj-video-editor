@@ -168,8 +168,11 @@ def combine_images(request):
                 if img.size[0] == img.size[1] and res=='tiktok-snapchat':
                     new_img = img.fx(vfx.resize, height=height)
                 else:
-                    new_img = img.fx(vfx.resize, height=height)
-                    new_img = resize(img, width=width)
+                    if img.size[0] > img.size[1]: 
+                        new_img = img.fx(vfx.resize, height=height)
+                    else:
+                        new_img = img.fx(vfx.resize, width=width)
+                        new_img = resize(img, width=width)
                 # new_img = new_img.fx(vfx.fadeout, duration=.35)
                 # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
                 if img_path_content_type == 'video/mp4':
