@@ -16,6 +16,17 @@
           <div class="card-body">
             <!-- <h5 class="card-title">إنشاء إعلان</h5> -->
             <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            <a href="{% url 'video-v2:combine' %}" class="btn text-light form-control" style="background: #ed1c24">دمج صور وفيديوهات</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <!-- <h5 class="card-title">إنشاء إعلان</h5> -->
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
             <a href="{% url 'video:combine-images' %}" class="btn text-light form-control" style="background: #ed1c24">إنشاء إعلان</a>
           </div>
         </div>
@@ -86,7 +97,17 @@
           </div>
         </div>
       </div>
-      
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+          <div class="card-body">
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            <a href="{% url 'audio:download-audio' %}" class="btn text-light form-control" style="background: #ed1c24">تحويل الفيديو إلى صوت</a>
+          </div>
+        </div>
+      </div>
+
       <!-- Repeat the above HTML for each set of 4 cards -->
     </div>
   </div>

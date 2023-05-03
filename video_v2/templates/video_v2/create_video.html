@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+إنشاء فيديو
+{% endblock title %}
+
+
+{% block content %}
+
+<!-- <h2>إنشاء فيديو</h2> -->
+<h2>
+  دمج فيديوهات وصور
+</h2>
+
+<br>
+
+<form method="POST" id="upload-form" enctype="multipart/form-data">
+    <div class="row">
+
+
+      <div class="col-sm-6">
+
+      {% csrf_token %}
+      <p>صورة / فيديوهات*</p>
+      <input type="file" name="images" accept="image/*, video/*" multiple class="form-control" required>
+      <br>
+      <p>الصوت*</p>
+      <input type="file" name="audio" accept="audio/*" class="form-control" required>
+      <br>
+      <input type="text" name="top_text" placeholder="النص العلوي" class="form-control" required>
+      <br>
+      <input type="text" name="bottom_text" placeholder="النص السفلي" class="form-control" required>
+      <br>
+      <input type="number" name="time_per_img" class="form-control" placeholder="الوقت بالثواني لكل صورة" required>
+      <br>
+      <select class="form-select" name="video-res" aria-label="Default select example" required>
+          <option selected>اختر مقاس الفيديو</option>
+          <option value="facebook1">فيسبوك 1200x628</option>
+          <option value="facebook2">فيسبوك 810x450</option>
+          <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
+          <option value="square">مربع 1080×1080</option>
+        </select>
+        <br>
+      </div>
+      <div class="col-sm-6">
+        <h3>إعدادات شاشة النهاية</h3>
+        <input type="text" placeholder="نص شاشة النهاية" class="form-control" name="end_screen_text">
+        <br>
+        <input type="text" placeholder="الرابط (ضع مسافة في حال لا يوجد رابط)" class="form-control" name="end_screen_url">
+      </div>
+
+      <div id="progress-bar-container" style="display:none">
+        <div id="progress-bar"></div>
+      </div>
+
+      <button type="submit" class="btn text-light form-control" style="background: #ed1c24">إنشاء</button>
+
+
+    </div>
+
+
+</form>
+
+
+{% endblock content %}

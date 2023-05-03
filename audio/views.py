@@ -66,3 +66,63 @@ def change_audio_speed(request):
         
     return render(request, 'audio/changespeed.html')
 
+
+
+@login_required
+def download_audio(request): 
+    user = request.user 
+
+
+
+    try:
+        subscription = Subscription.objects.get(user=user)
+        if subscription: 
+            if datetime.date.today() > subscription.end_date_time: 
+                # print('Please Renew Your Subscription')
+                # هنا يجب تجديد الاشتراك
+                subscription.delete()
+                return redirect('/pay/plans/') 
+    except:
+        return redirect('/pay/plans') 
+
+    features = Feature.objects.get(plan=subscription.plan)
+
+
+    if features.change_audio_speed == True:
+        pass 
+    else: 
+        return redirect('/pay/plans/')
+
+
+    if request.method == 'POST' and request.FILES['video']:
+        # Get the uploaded video file from the HTML input
+        video_file = request.FILES['video']
+
+        if os.path.exists('temp_video.mp4'):
+            os.remove('temp_video.mp4')
+
+        # Save the video file to a temporary location
+        with open('temp_video.mp4', 'wb+') as f:
+            for chunk in video_file.chunks():
+                f.write(chunk)
+
+        # Load the video file using moviepy
+        video_clip = VideoFileClip('temp_video.mp4')
+
+        # Extract the audio from the video clip
+        audio_clip = video_clip.audio
+
+        # Save the audio to a file
+        audio_clip.write_audiofile('audio.mp3') 
+
+        # Clean up the temporary video file
+
+        # Serve the audio file to the user for download
+        with open('audio.mp3', 'rb') as f:
+            response = HttpResponse(f.read(), content_type='audio/mpeg')
+            response['Content-Disposition'] = 'attachment; filename="audio.mp3"'
+
+        # os.remove('temp_video.mp4')
+        return response
+
+    return render(request, 'audio/download_audio.html')
