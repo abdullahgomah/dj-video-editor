@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+تحويل الفيديو إلى صوت
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-3">تحويل الفيديو إلى صوت</h2>
+
+    <form action="" method="POST" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>الفيديو*</p>
+        <input type="file" name="video" accept="video/*" class="form-control">
+
+        <br>
+
+        <button class="btn text-light form-control" style="background: #ed1c24">بدء</button>
+    </form>
+</div>
+
+{% endblock content %}

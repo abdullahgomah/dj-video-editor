@@ -5,6 +5,7 @@ from .models import *
 from .forms import UploadImageForm, VideoTextForm
 from moviepy.editor import *
 from moviepy.video.fx.resize import resize
+import emoji 
 
 from PIL import Image
 import numpy as np 
@@ -38,6 +39,7 @@ new_font= 'Alexandria-VariableFont_wght.ttf'
 
 
 new_font = 'Changa-Regular.ttf'
+new_font = 'NotoColorEmoji-Regular.ttf'
 
 #new_font= 'NotoNaskhArabic-VariableFont_wght.ttf'
 
@@ -113,7 +115,6 @@ def combine_images(request):
                 formated_end_text.append(formated)
 
             end_text = get_display(' '.join(formated_end_text) )
-             
 
 
             formated_end_url = []  
@@ -185,6 +186,7 @@ def combine_images(request):
                 formated_top_text.append(formated)
 
             top_text = get_display(' '.join(formated_top_text) )
+            top_text_with_emoji = emoji.emojize(top_text)
              
             
             # bottom_text = arabic_reshaper.reshape(request.POST.get('bottom_text')) 
@@ -202,10 +204,12 @@ def combine_images(request):
             
  
             bottom_text = get_display(' '.join(formated_bottom_text ))
+            bottom_text_with_emoji = emoji.emojize(bottom_text)
 
 
-            top_text_clip = TextClip(txt=str(top_text), font=font_path ,fontsize=font_size, color='white').set_duration(time_per_img)
-            bottom_text_clip = TextClip(txt=str(bottom_text), font=font_path ,fontsize=font_size ,color='white').set_duration(time_per_img)
+
+            top_text_clip = TextClip(txt=str(top_text_with_emoji), font=font_path ,fontsize=font_size, color='white').set_duration(time_per_img)
+            bottom_text_clip = TextClip(txt=str(bottom_text_with_emoji), font=font_path ,fontsize=font_size ,color='white').set_duration(time_per_img)
             
             top_text_width, top_text_height = top_text_clip.size 
             bottom_text_width, bottom_text_height = bottom_text_clip.size 
@@ -639,7 +643,7 @@ def combine_video_withlogo(request):
             
 
             # Save the final video to the output file
-            video_clip.write_videofile(filename, fps=25, threads=10, preset='veryfast', codec='libx264')
+            video_clip.write_videofile(filename, fps=25, threads=12, preset='veryfast', codec='libx264')
 
             # Serve the video file for download
             with open(filename, 'rb') as video:
