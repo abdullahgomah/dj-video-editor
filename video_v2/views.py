@@ -296,7 +296,7 @@ def combine_images(request):
 
             # Write the video file to disk
             # video.write_videofile(video_file_path, codec='libx264')
-            video.write_videofile(video_file_path, fps=30, threads=12)
+            video.write_videofile(video_file_path, fps=30, threads=8)
 
             # Open the video file and create an HTTP response with the file contents
             with open(video_file_path, 'rb') as f:
