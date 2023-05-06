@@ -69,7 +69,7 @@ def combine_images(request):
     features = Feature.objects.get(plan=subscription.plan)
 
 
-    if features.template1 == True: 
+    if features.video_imgs_template == True: 
         pass 
     else: 
         return redirect('/pay/plans/')
@@ -93,9 +93,7 @@ def combine_images(request):
             
 
 
-            audio = request.FILES.get('audio') 
 
-            audio_clip = AudioFileClip(audio.temporary_file_path()) 
 
             # audio_file = afx.audio_loop(audio_clip, duration=((len(images) + 1)* time_per_img))
 
@@ -249,10 +247,8 @@ def combine_images(request):
 
             final_top_text_clip = CompositeVideoClip(clips=[top_color_clip, top_text_clip.set_position("center", "center")])
             final_bottom_text_clip = CompositeVideoClip(clips=[bottom_color_clip, bottom_text_clip.set_position("center", "center")])
+            
 
-
-
-            audio_file = afx.audio_loop(audio_clip, duration=(final_duration)) 
 
 
             watermark = TextClip(txt='Video Editor', font=font_path, fontsize=30).set_opacity(.5).set_position(('center', 'center')).set_duration(time_per_img)
@@ -288,7 +284,19 @@ def combine_images(request):
 
             composite_clips.append(end_clip) 
 
-            video = concatenate_videoclips(composite_clips, method="chain").set_audio(audio_file)
+
+            if request.FILES.get('audio') != None: 
+                
+                audio = request.FILES.get('audio') 
+            
+                audio_clip = AudioFileClip(audio.temporary_file_path()) 
+
+                audio_file = afx.audio_loop(audio_clip, duration=(final_duration)) 
+
+                video = concatenate_videoclips(composite_clips, method="chain").set_audio(audio_file)
+            else: 
+
+                video = concatenate_videoclips(composite_clips, method="chain")
 
             # Set the video file name and path
             video_file_name = 'my_video.mp4'
