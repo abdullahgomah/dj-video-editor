@@ -296,11 +296,11 @@ def combine_images(request):
 
             # Write the video file to disk
             # video.write_videofile(video_file_path, codec='libx264')
-<<<<<<< HEAD
+
+#            video.write_videofile(video_file_path, fps=30)
+
             video.write_videofile(video_file_path, fps=30)
-=======
-            video.write_videofile(video_file_path, fps=30, threads=8)
->>>>>>> refs/remotes/origin/main
+
 
             # Open the video file and create an HTTP response with the file contents
             with open(video_file_path, 'rb') as f:
