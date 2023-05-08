@@ -149,37 +149,42 @@ def combine_images(request):
             clips =[] 
 
 
+
+
             for img in images:
                 img_path = img.temporary_file_path()
                 img_path_content_type = img.content_type
 
                 print(img_path_content_type) 
 
-                if img_path_content_type == 'image/jpeg' or img_path_content_type == 'image/png': 
+                if str(img_path_content_type).startswith('image/'): 
                     img = ImageClip(img_path).set_position('center', 'center').set_duration(time_per_img)
-                elif img_path_content_type == 'video/mp4': 
+                    img = img.set_duration(time_per_img)
+                elif str(img_path_content_type).startswith('video/'): 
                     img = VideoFileClip(img_path).set_position('center', 'center')
-                    # THIS CODE REMOVE THE AUDIO FROM THE VIDEO 
-                    img.set_audio(None)
-                    
+
 
                 if img.size[0] == img.size[1] and res=='tiktok-snapchat':
+                    # new_img = img.fx(vfx.resize, height=height-final_top_text_clip.size[1]-final_bottom_text_clip.size[1])
                     new_img = img.fx(vfx.resize, height=height)
                 else:
                     if img.size[0] > img.size[1]: 
-                        new_img = img.fx(vfx.resize, height=height)
+                        # new_img = img.fx(vfx.resize, height=height-final_top_text_clip.size[1]-final_bottom_text_clip.size[1])
+                        new_img = img.fx(vfx.resize, height=height-200)
                     else:
-                        new_img = img.fx(vfx.resize, width=width)
+                        new_img = img.fx(vfx.resize, height=height-200)
                         new_img = resize(img, width=width)
                 # new_img = new_img.fx(vfx.fadeout, duration=.35)
                 # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
-                if img_path_content_type == 'video/mp4':
+                if str(img_path_content_type).startswith('video/'):
                     final_duration += new_img.duration 
-                elif img_path_content_type == 'image/jpeg':
+                elif str(img_path_content_type).startswith('image/'):
                     final_duration += time_per_img
-                    new_img = new_img.resize(lambda t: 1 + 0.18 * t)  # Zoom-in effect
+                    new_img = new_img.resize(lambda t: 0.75 + 0.18 * t)  # Zoom-in effect
                     
                 clips.append(new_img)
+
+
 
 
 
@@ -257,18 +262,22 @@ def combine_images(request):
             composite_clips = []
 
             
+            
 
             if subscription.plan.price == 0: 
                 for clip in clips:
+                    print('price 0')
                     composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center'), watermark], size=(width, height) )
                     # final_composite_clip = CompositeVideoClip([composite_clip, TextClip(txt='Video Editor', font=font_path, fontsize=30).set_position('center', 'center')])
                     composite_clips.append(composite_clip)
             
             else: 
-
+                print("price not 0 ")
                 for clip in clips:
                     composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center')], size=(width, height))
                     composite_clips.append(composite_clip)
+
+
 
 
             end_screen = ColorClip(size=(width, height), color=(0, 0, 0)).set_duration(time_per_img).set_position("center", "center") 
@@ -304,11 +313,15 @@ def combine_images(request):
 
             # Write the video file to disk
             # video.write_videofile(video_file_path, codec='libx264')
+<<<<<<< HEAD
 
 #            video.write_videofile(video_file_path, fps=30)
 
             video.write_videofile(video_file_path, fps=30)
 
+=======
+            video.write_videofile(video_file_path, fps=30, threads=12, codec='libx264')
+>>>>>>> 5c2d668830a485702ae5b22e142d84977410a470
 
             # Open the video file and create an HTTP response with the file contents
             with open(video_file_path, 'rb') as f:

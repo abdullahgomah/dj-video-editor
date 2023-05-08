@@ -168,9 +168,9 @@ def combine_images(request):
             for img in image_paths:
                 img = ImageClip(img).set_position('center', 'center').set_duration(time_per_img)
                 if img.size[0] == img.size[1] and res=='tiktok-snapchat':
-                    new_img = img.fx(vfx.resize, height=height)
+                    new_img = img.fx(vfx.resize, height=height-100)
                 else:
-                    new_img = img.fx(vfx.resize, height=height)
+                    new_img = img.fx(vfx.resize, height=height-100)
                     new_img = resize(img, width=width)
                 # new_img = new_img.fx(vfx.fadeout, duration=.35)
                 # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
