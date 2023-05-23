@@ -175,7 +175,7 @@ ACCOUNT_UNIQUE_EMAIL =True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
-CSRF_TRUSTED_ORIGINS = ['http://5.189.171.130']
+CSRF_TRUSTED_ORIGINS = ['http://5.189.171.130', 'https://www.viid.pro', 'https://www.viid.pro']
 
 
 
