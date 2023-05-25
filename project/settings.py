@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r(99a#r(5dm=9q%6kxr*j7&1d+k&q&i7rns@-b49692ip9o#)g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True 
+DEBUG = False 
 
 ALLOWED_HOSTS = ['5.189.171.130', 'localhost', 'http://www.viid.pro', 'viid.pro', 'www.viid.pro', '127.0.0.1']
 
