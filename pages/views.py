@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from pay.models import * 
 from .models import Contact
 import datetime 
-
+import sys
 # Create your views here.
 def index(request):
     check_plan(request) 
@@ -56,4 +56,8 @@ def handler404(request, exception):
     return render(request, 'pages/404.html', status=404)
 
 def handler500(request):
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    #print(exc_type)
+    #print(exc_value)
+    #print(exc_traceback)
     return render(request, 'pages/500.html', status=500) 

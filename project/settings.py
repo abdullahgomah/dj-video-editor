@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-r(99a#r(5dm=9q%6kxr*j7&1d+k&q&i7rns@-b49692ip9o#)g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
 
-ALLOWED_HOSTS = ['5.189.171.130', 'localhost', 'http://www.viid.pro', 'viid.pro', 'www.viid.pro', '127.0.0.1']
+ALLOWED_HOSTS = ['5.189.171.130', 'localhost', 'http://www.viid.pro', 'viid.pro', 'www.viid.pro', '127.0.0.1', 'https://www.viid.pro']
 
 
 # Application definition
@@ -178,7 +178,7 @@ ACCOUNT_UNIQUE_EMAIL =True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
-CSRF_TRUSTED_ORIGINS = ['http://5.189.171.130', 'https://www.viid.pro', 'https://www.viid.pro']
+CSRF_TRUSTED_ORIGINS = ['http://5.189.171.130', 'https://www.viid.pro', 'https://www.viid.pro', 'https://vidd.pro']
 
 
 

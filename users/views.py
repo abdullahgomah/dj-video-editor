@@ -8,7 +8,7 @@ from pay.models import Subscription
 
 @login_required
 def profile(request):
-    user = request.user 
+    user = request.user
     try:
         subscription = Subscription.objects.get(user=user)
     except: 
