@@ -161,7 +161,7 @@ def combine_images(request):
                     img = ImageClip(img_path).set_position('center', 'center').set_duration(time_per_img)
                     img = img.set_duration(time_per_img)
                 elif str(img_path_content_type).startswith('video/'): 
-                    img = VideoFileClip(img_path).set_position('center', 'center')
+                    img = VideoFileClip(img_path).set_position(('center', 'top'))
 
 
                 if img.size[0] == img.size[1] and res=='tiktok-snapchat':
