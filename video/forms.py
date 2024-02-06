@@ -1,7 +1,7 @@
 from django import forms
 
 class UploadImageForm(forms.Form):
-    files = forms.FileField(label='الصور', widget=forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control', 'accept': ".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"}))
+    files = forms.FileField(label='الصور', widget=forms.ClearableFileInput(attrs={'allow_multiple_selected': True, 'class': 'form-control', 'accept': ".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"}))
 
 
 
