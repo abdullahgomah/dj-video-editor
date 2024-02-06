@@ -92,7 +92,8 @@ def combine_images(request):
             images = request.FILES.getlist('images')
             
 
-
+            widths_list = [] 
+            heights_list = [] 
 
 
             # audio_file = afx.audio_loop(audio_clip, duration=((len(images) + 1)* time_per_img))
@@ -162,7 +163,8 @@ def combine_images(request):
                     img = img.set_duration(time_per_img)
                 elif str(img_path_content_type).startswith('video/'): 
                     img = VideoFileClip(img_path).set_position(('center', 'top'))
-
+    
+                
 
                 if img.size[0] == img.size[1] and res=='tiktok-snapchat':
                     # new_img = img.fx(vfx.resize, height=height-final_top_text_clip.size[1]-final_bottom_text_clip.size[1])
@@ -174,6 +176,9 @@ def combine_images(request):
                     else:
                         new_img = img.fx(vfx.resize, height=height-200)
                         new_img = resize(img, width=width)
+                
+
+
                 # new_img = new_img.fx(vfx.fadeout, duration=.35)
                 # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
                 if str(img_path_content_type).startswith('video/'):
@@ -183,8 +188,8 @@ def combine_images(request):
                     new_img = new_img.resize(lambda t: 0.75 + 0.18 * t)  # Zoom-in effect
                     
                 clips.append(new_img)
-
-
+                widths_list.append(new_img.size[0])
+                heights_list.append(new_img.size[1])
 
 
 
@@ -267,14 +272,14 @@ def combine_images(request):
             if subscription.plan.price == 0: 
                 for clip in clips:
                     print('price 0')
-                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center'), watermark], size=(width, height) )
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center'), watermark], size=(width, (height + final_top_text_clip.size[1] )) )
                     # final_composite_clip = CompositeVideoClip([composite_clip, TextClip(txt='Video Editor', font=font_path, fontsize=30).set_position('center', 'center')])
                     composite_clips.append(composite_clip)
             
             else: 
                 print("price not 0 ")
                 for clip in clips:
-                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center')], size=(width, height))
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center')], size=(width, (height + final_top_text_clip.size[1] )))
                     composite_clips.append(composite_clip)
 
 
@@ -339,3 +344,70 @@ def combine_images(request):
     else:
         return render(request, 'video_v2/create_video.html')
 
+
+
+def combine_imgs_v2(request): 
+    if request.POST: 
+        top_text = request.POST.get('top-text')
+        bottom_text = request.POST.get('bottom-text')
+
+        """
+        هنا انا بفكر ازاي هحسب العرض بتاع النص العلوي والسفلي واخلي النص ميعديش العرض بتاع الشاشة نفسها 
+        عشان اعمل لون الخلفية 
+        بعدين عاوز اعمل input 
+        للخلفية عشان المستخدم يقدر يغير لون الخلفية زي ما هو عايز
+        بعدها عاوز اعرف ايه وحدة قياس حجم الخط عشان اسمح للمستخدم يغيره برضو عن طريق input 
+        بعدها عاوز ابحث في الانتقالات بين الكليبات وخليها عشوائية أو الأفضل من كده اني اخلي المستخدم يختار التنقل في المشروع بتاعه
+        كمان عاوز ما انساش احول الكلام زي الدالة اللي فوق دي عشان ما يحصلش مشكلة في الكلام العربي 
+        عاوز اعمل العلامة المائية برضو بس بطريقة أحسن 
+        """
+
+        widths_list = [] 
+        heights_list = [] 
+        clips = [] 
+        final_clips = [] 
+        tpi = request.POST.get('tpi')
+        imgs = request.FILES.getlist('imgs-input') 
+        for img in imgs: 
+            img_path = img.temporary_file_path() 
+            img_content_type = img.content_type 
+            if img_content_type.startswith('video/'): 
+                img = VideoFileClip(img_path).set_position(('center', 'center')) 
+            else: 
+                img = ImageClip(img_path).set_duration(tpi).set_position(('center', 'center'))
+
+            img_width = img.size[0] 
+            img_height = img.size[1] 
+
+            widths_list.append(img_width) 
+            heights_list.append(img_height)
+
+            clips.append(img) 
+
+        
+        for clip in clips: 
+            clip = CompositeVideoClip(clips=[clip.set_position(('center', 'center'))], size=((int(max(widths_list)), int(max(heights_list))))) 
+            final_clips.append(clip) 
+
+
+        video = concatenate_videoclips(final_clips, method="chain")
+        video_file_name = 'my_video.mp4'
+        video_file_path = 'media/' + video_file_name
+        
+        video.write_videofile(video_file_path, fps=30, threads=12, codec='libx264')
+
+        # Open the video file and create an HTTP response with the file contents
+        with open(video_file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='video/mp4')
+            response['Content-Disposition'] = 'attachment; filename=' + video_file_name
+
+        # Delete the video file from disk
+        os.remove(video_file_path)
+        
+        return response 
+
+
+
+
+    context = {} 
+    return render(request, 'video_v2/combine-v2.html', context)

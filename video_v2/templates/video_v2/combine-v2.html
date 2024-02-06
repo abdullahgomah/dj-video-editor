@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}دمج صور{% endblock title %}
+
+{% block content %}
+
+
+<section>
+    <h2>دمج صور</h2>
+
+    <form enctype="multipart/form-data" class="form mt-3" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="imgs-input" class="form-label">الصور*</label>
+            <input type="file" name="imgs-input" class="form-control file-input" id="imgs-input" multiple required>
+            <p class="form-text">أرفع الصور أو أفلتها هنا</p>
+        </div>
+        <div>
+           <input class='form-control' required type="text" name="tpi" placeholder="اكتب الوقت لكل صورة"> 
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="top-text" placeholder="enter top  text">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="bottom-text" placeholder="enter bottom  text">
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-dark">دمج الصور</button>
+    </form>
+</section>
+
+{% endblock content %}
