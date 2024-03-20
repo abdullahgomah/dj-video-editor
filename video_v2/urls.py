@@ -4,6 +4,7 @@ from .views import *
 app_name = 'video_v2'
 
 urlpatterns = [
-    # path('combine/', combine_images, name='combine'),
-    path('combine/', combine_imgs_v2, name='combine'),
+    path('combine/', combine_images, name='combine'),
+    # path('combine/', combine_imgs_v2, name='combine'),
+    path('new-combine/', new_create, name='new-create'), 
 ]

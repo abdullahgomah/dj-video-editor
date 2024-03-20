@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}إنشاء إعلان{% endblock title %}
+
+{% block content %}
+
+
+<h1>إنشاء فيديو</h1>
+<hr>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            <h4>إعدادات الفيديو</h4>
+            <div class="mb-3">
+                <label for="images-input" class="form-label">الملفات*</label>
+                <input type="file" accept="image/*,video/*" id="images-input" multiple required name="images-input" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="tpi-input" class="form-label">الوقت لكل صورة</label>
+                <input type="text" name="tpi-input" id='tpi-input' class="form-control" placeholder="أدخل الوقت المحدد لكل صورة">
+            </div>
+            <div class="mb-3">
+                <label for="font-size-input">حجم الخط</label>
+                <input type="text" name="font-size-input" id="font-size-input" class="form-control" placeholder="أدخل الحجم الخط">
+            </div>  
+            <div class="mb-3">
+                <label for="transition-select" class="form-label">تأثير الانتقال</label>
+                <select name="transition-select" id="transition-select" class="form-select">
+                    <option value="fade_in" selected>Fade In (default)</option>
+                    <option value="fade_out">Fade Out</option>
+                    <option value="slide_in">Slide In</option>
+                    <option value="slide_out">Slide Out</option>
+                    <option value="zoom">Zoom</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="text-input-1">النص العلوي 1</label>
+                <input type="text" id="text-input-1" name="top-text-input-1" placeholder="أدخل النص العلوي الأول" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="text-input-2">النص العلوي 2</label>
+                <input class="form-control" type="text" id="text-input-2" name="top-text-input-2" placeholder="أدخل النص العلوي الثاني">
+            </div>
+            <div class="mb-3">
+                <label for="text-input-3">النص العلوي 3</label>
+                <input class="form-control" type="text" id="text-input-3" name="top-text-input-3" placeholder="أدخل النص العلوي الثالث">
+            </div>
+            <div class="mb-3">
+                <label for="text-input-4">النص العلوي 4</label>
+                <input class="form-control" type="text" id="text-input-4" name="top-text-input-4" placeholder="أدخل النص العلوي الرابع">
+            </div>
+            <div class="mb-3">
+                <label for="bottom-text-input-1">النص السفلي 1</label>
+                <input type="text" name="bottom-text-input-1" class="form-control" id="bottom-text-input-1" placeholder="أدخل النص السفلي الأول">
+            </div>
+
+            <div class="mb-3">
+                <label for="bottom-text-input-2">النص السفلي 2</label>
+                <input type="text" name="bottom-text-input-2" class="form-control" id="bottom-text-input-2" placeholder="أدخل النص السفلي الثاني">
+            </div>
+
+            <div class="mb-3">
+                <label for="bottom-text-input-3">النص السفلي 3</label>
+                <input type="text" name="bottom-text-input-3" class="form-control" id="bottom-text-input-3" placeholder="أدخل النص السفلي الثالث">
+            </div>
+
+            <div class="mb-3">
+                <label for="bottom-text-input-4">النص السفلي 4</label>
+                <input type="text" name="bottom-text-input-4" id="bottom-text-input-4" class="form-control" placeholder="أدخل النص السفلي الرابع">
+            </div>
+
+            <div class="mb-3">
+                <label for="res-input" class="form-label">مقاس الفيديو*</label>
+                <select class="form-select" name="video-res" aria-label="Default select example" required>
+                    <option selected>اختر مقاس الفيديو</option>
+                    <option value="facebook1">فيسبوك 1200x628</option>
+                    <option value="facebook2">فيسبوك 810x450</option>
+                    <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
+                    <option value="square">مربع 1080×1080</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="text-color-input">لون النص</label>
+                <input type="color" name="text-color-input" id="text-color-input" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="bg-color-input">لون الخلفية</label>
+                <input type="color" name="bg-color-input" id="bg-color-input" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>إعدادات شاشة النهاية</h4>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-dark">ابدأ</button>
+</form>
+
+
+{% endblock content %}

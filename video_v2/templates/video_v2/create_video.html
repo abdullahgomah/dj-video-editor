@@ -18,7 +18,7 @@
     <div class="row">
 
 
-      <div class="col-sm-6">
+    <div class="col-sm-6">
 
       {% csrf_token %}
       <p>صورة / فيديوهات*</p>
@@ -27,9 +27,17 @@
       <p>الصوت (اختياري)</p>
       <input type="file" name="audio" accept="audio/*" class="form-control">
       <br>
-      <input type="text" name="top_text" placeholder="النص العلوي" class="form-control" required>
+	  <div class="top-text-inputs">
+		  <input type="text" name="top_text" placeholder="النص العلوي" class="form-control" required>
+	  </div>
+	  <a class="btn btn-warning mt-2" id='btn-add-top-text'>+</a>
       <br>
-      <input type="text" name="bottom_text" placeholder="النص السفلي" class="form-control" required>
+	  <br>
+	  <div class="bottom-text-inputs">
+		  <input type="text" name="bottom_text" placeholder="النص السفلي" class="form-control" required>
+	  </div>
+	  <a class="btn btn-warning mt-2" id='btn-add-bottom-text'>+</a>
+	  <br>
       <br>
       <input type="number" name="time_per_img" class="form-control" placeholder="الوقت بالثواني لكل صورة" required>
       <br>
@@ -39,9 +47,34 @@
           <option value="facebook2">فيسبوك 810x450</option>
           <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
           <option value="square">مربع 1080×1080</option>
+      </select>
+      <br>
+      <input type="number" name="font-size-input" id="font-size-input" placeholder="اكتب حجم الخط" class="form-control">
+      <br>
+      <label for="" class="form-label">لون الخلفية</label>
+      <input type="color" name="bg-color-inoput" class="form-control" id="">
+
+      <br>
+      <label for="" class="form-label">لون الخط</label>
+      <input type="color" name="font-color-input" class="form-control" id="">
+
+      <br>
+      <div class="">
+        <label for="transition-input" class="form-label">تأثير الانتقال</label>
+        <select name="transition-input" id="transition-input" class="form-select">
+          <option value="slide_in" selected >Slide In (Default)</option>
+          <option value="slide_out" >Slide Out</option>
+          <option value="fade_in" >Fade In</option>
+          <option value="fade_out" >Fade Out</option>
+          <option value="zoom" >Zoom</option>
         </select>
-        <br>
       </div>
+      </div>
+      
+
+
+
+
       <div class="col-sm-6">
         <h3>إعدادات شاشة النهاية</h3>
         <input type="text" placeholder="نص شاشة النهاية" class="form-control" name="end_screen_text">
@@ -49,17 +82,53 @@
         <input type="text" placeholder="الرابط (ضع مسافة في حال لا يوجد رابط)" class="form-control" name="end_screen_url">
       </div>
 
-      <div id="progress-bar-container" style="display:none">
-        <div id="progress-bar"></div>
-      </div>
 
-      <button type="submit" class="btn text-light form-control" style="background: #ed1c24">إنشاء</button>
+      <button type="submit" class="btn text-light form-control mt-3" style="background: #ed1c24">إنشاء</button>
 
 
     </div>
 
 
 </form>
+
+
+<script>
+	let topCounter = 2;
+	let btnAddTopText = document.querySelector('#btn-add-top-text'); 
+	let topTextInputsWrapper = document.querySelector('.top-text-inputs'); 
+	
+	let bottomCounter = 2; 
+	let btnAddBottomText = document.querySelector('#btn-add-bottom-text');
+	let bottomTextInputsWrapper = document.querySelector('.bottom-text-inputs'); 
+
+	
+	function createTopTextInput(num, wrapper) {
+		let newTextInput = document.createElement('input')
+		newTextInput.type = 'text'; 
+		newTextInput.classList.add('form-control', 'mt-3');
+		newTextInput.placeholder= `النص العلوي ${num}`
+		newTextInput.name = `top-text-input-${num}`
+		wrapper.appendChild(newTextInput); 
+
+		topCounter +=1;
+	}
+
+	function createBottomTextInput(num, wrapper) {
+		let newTextInput = document.createElement('input')
+		newTextInput.type = 'text'; 
+		newTextInput.classList.add('form-control', 'mt-3');
+		newTextInput.placeholder= `النص السفلي ${num}`
+		newTextInput.name = `top-text-${num}`
+		wrapper.appendChild(newTextInput); 
+		
+		bottomCounter +=1;
+	}
+
+	btnAddTopText.addEventListener('click', ()=> {createTopTextInput(topCounter, topTextInputsWrapper)})
+	btnAddBottomText.addEventListener('click', ()=> {createBottomTextInput(bottomCounter, bottomTextInputsWrapper)})
+
+
+</script>
 
 
 {% endblock content %}

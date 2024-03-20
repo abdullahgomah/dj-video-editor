@@ -2,7 +2,9 @@
 from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import redirect, render 
 from moviepy.editor import *
+from moviepy.editor import transfx, vfx 
 from moviepy.video.fx.resize import resize
+from django.contrib.auth.decorators import login_required
 
 from PIL import Image
 import numpy as np 
@@ -45,6 +47,17 @@ configuration = {
 reshaper = ArabicReshaper(configuration=configuration)
 
 
+def hex_to_rgb(hex_color):
+    # Remove '#' if present
+    hex_color = hex_color.lstrip('#')
+
+    # Extract individual color components
+    red = int(hex_color[0:2], 16)
+    green = int(hex_color[2:4], 16)
+    blue = int(hex_color[4:6], 16)
+
+    return (red, green, blue)
+
 
 def combine_images(request):
 
@@ -86,6 +99,26 @@ def combine_images(request):
 
             # Get the uploaded images from the HTML form
             time_per_img = int(request.POST.get("time_per_img"))
+            font_size_input = request.POST.get('font-size-input') 
+            bg_color_input = request.POST.get('bg-color-inoput') 
+            font_color_input= request.POST.get('font-color-input')
+            bg_rgb_color = hex_to_rgb(bg_color_input) 
+            font_rgb_color = hex_to_rgb(font_color_input) 
+
+            top_text_input_2 = "" 
+            if request.POST.get('top-text-input-2') != "" or request.POST.get('top-text-input-2') != None: 
+                top_text_input_2 = request.POST.get('top-text-input-2') 
+                
+            top_text_input_3 = "" 
+            if request.POST.get('top-text-input-3') != "" or request.POST.get('top-text-input-3') != None: 
+                top_text_input_3 = request.POST.get('top-text-input-3') 
+
+            top_text_input_4 = "" 
+            if request.POST.get('top-text-input-4') != "" or request.POST.get('top-text-input-4') != None: 
+                top_text_input_4 = request.POST.get('top-text-input-4') 
+                
+
+            print(bg_color_input) 
 
             final_duration = 0 
 
@@ -127,7 +160,10 @@ def combine_images(request):
 
             width = 0 
             height = 0
-            font_size = 40
+            try: 
+                font_size = int(font_size_input)
+            except: 
+                font_size = 40
 
             if res=='facebook1':
                 width = 1200
@@ -162,7 +198,7 @@ def combine_images(request):
                     img = ImageClip(img_path).set_position('center', 'center').set_duration(time_per_img)
                     img = img.set_duration(time_per_img)
                 elif str(img_path_content_type).startswith('video/'): 
-                    img = VideoFileClip(img_path).set_position(('center', 'top'))
+                    img = VideoFileClip(img_path).set_position(('center', 'center'))
     
                 
 
@@ -181,6 +217,11 @@ def combine_images(request):
 
                 # new_img = new_img.fx(vfx.fadeout, duration=.35)
                 # new_img = new_img.fx(transfx.slide_out, duration=.5, side='left')
+                        
+                transition_select= request.POST.get('transition-input') 
+
+
+
                 if str(img_path_content_type).startswith('video/'):
                     final_duration += new_img.duration 
                 elif str(img_path_content_type).startswith('image/'):
@@ -246,14 +287,14 @@ def combine_images(request):
             bottom_text = get_display(' '.join(formated_bottom_text ))
 
 
-            top_text_clip = TextClip(txt=str(top_text), font=font_path ,fontsize=font_size, color='white').set_duration(final_duration)
-            bottom_text_clip = TextClip(txt=str(bottom_text), font=font_path ,fontsize=font_size ,color='white').set_duration(final_duration)
+            top_text_clip = TextClip(txt=str(top_text), font=font_path ,fontsize=font_size, color=font_color_input).set_duration(final_duration)
+            bottom_text_clip = TextClip(txt=str(bottom_text), font=font_path ,fontsize=font_size ,color=font_color_input).set_duration(final_duration)
             
             top_text_width, top_text_height = top_text_clip.size 
             bottom_text_width, bottom_text_height = bottom_text_clip.size 
             
-            top_color_clip = ColorClip(size=(width, top_text_height+20), color=(0, 0, 0)).set_duration(final_duration).set_position("top", "center")
-            bottom_color_clip = ColorClip(size=(width, bottom_text_height+20), color=(0, 0, 0)).set_duration(final_duration).set_position("center", "center")
+            top_color_clip = ColorClip(size=(width, top_text_height+20), color=bg_rgb_color).set_duration(final_duration).set_position("top", "center")
+            bottom_color_clip = ColorClip(size=(width, bottom_text_height+20), color=bg_rgb_color).set_duration(final_duration).set_position("center", "center")
 
             final_top_text_clip = CompositeVideoClip(clips=[top_color_clip, top_text_clip.set_position("center", "center")])
             final_bottom_text_clip = CompositeVideoClip(clips=[bottom_color_clip, bottom_text_clip.set_position("center", "center")])
@@ -272,14 +313,14 @@ def combine_images(request):
             if subscription.plan.price == 0: 
                 for clip in clips:
                     print('price 0')
-                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center'), watermark], size=(width, (height + final_top_text_clip.size[1] )) )
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center'), watermark], size=(width, (height )) )
                     # final_composite_clip = CompositeVideoClip([composite_clip, TextClip(txt='Video Editor', font=font_path, fontsize=30).set_position('center', 'center')])
                     composite_clips.append(composite_clip)
             
             else: 
                 print("price not 0 ")
                 for clip in clips:
-                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center')], size=(width, (height + final_top_text_clip.size[1] )))
+                    composite_clip = CompositeVideoClip([clip, final_top_text_clip.set_duration(clip.duration).set_position('top', 'center'), final_bottom_text_clip.set_duration(clip.duration).set_position('bottom', 'center')], size=(width, (height )))
                     composite_clips.append(composite_clip)
 
 
@@ -411,3 +452,193 @@ def combine_imgs_v2(request):
 
     context = {} 
     return render(request, 'video_v2/combine-v2.html', context)
+
+
+
+def return_rgb(color): 
+    r= int(color[1:3], 16)
+    g= int(color[3:5], 16)
+    b= int(color[5:7], 16)
+
+    return r,g,b
+
+
+def create_text_clip(txt, font_color, bg_color, font_size): 
+    clip = TextClip(txt, color=font_color, bg_color=bg_color, fontsize=font_size)
+    return clip 
+
+@login_required
+def new_create(request): 
+    if request.POST: 
+        res = request.POST.get('video-res') 
+        transition = request.POST.get('transition-select')
+        tpi_input = request.POST.get('tpi-input') 
+        if tpi_input == "" or tpi_input == 0 or tpi_input == None: 
+            tpi_input = 5
+        total_duration = 0 
+        clips = [] 
+        width, height= 1080, 1080
+        if res == 'facebook1': 
+            width = 1200 
+            height = 628  
+        elif res == 'facebook2': 
+            width = 810 
+            height  =  450  
+        elif res == 'tiktok-snapchat': 
+            width = 1080 
+            height = 1920 
+        elif res == 'square': 
+            width = 1080 
+            height = 1080 
+
+        top_text_1 = request.POST.get('top-text-input-1') 
+        top_text_2 = request.POST.get('top-text-input-2') 
+        top_text_3 = request.POST.get('top-text-input-3') 
+        top_text_4 = request.POST.get('top-text-input-4')
+
+        bottom_text_1 = request.POST.get('bottom-text-input-1') 
+        bottom_text_2 = request.POST.get('bottom-text-input-2') 
+        bottom_text_3 = request.POST.get('bottom-text-input-3') 
+        bottom_text_4 = request.POST.get('bottom-text-input-4') 
+
+        top_text_list = [top_text_1, top_text_2, top_text_3, top_text_4]
+        bottom_text_list = [bottom_text_1, bottom_text_2, bottom_text_3, bottom_text_4]
+        new_top_text_list = [] 
+        new_bottom_text_list = [] 
+
+        ## error happen becacuse list decreases, I should solve it using new list to add the value to it 
+        for i in range(int(len(top_text_list))): 
+            print(top_text_list[i]) 
+            if top_text_list[i] != None or top_text_list[i] != "" or top_text_list[i] != " " or len(top_text_list[i]) != 0: 
+                formated_top_text = []  
+                for word in top_text_list[i].split(' '):
+                    formated = reshaper.reshape(word)
+                    #text_to_display = get_display(formated) 
+                    formated_top_text.append(formated)
+
+                    top_text = get_display(' '.join(formated_top_text) )
+              
+                new_top_text_list.append(top_text) 
+        
+        for i in range(int(len(bottom_text_list))): 
+            formated_top_text = []  
+            for word in bottom_text_list[i].split(' '):
+                formated = reshaper.reshape(word)
+                #text_to_display = get_display(formated) 
+                formated_top_text.append(formated)
+
+                bottom_text = get_display(' '.join(formated_top_text) )
+            
+            new_bottom_text_list.append(bottom_text) 
+        
+        
+        """
+        المفروض هنا هعمل كليب نصي لكل عنصر من اللي موجودين في القائمة
+        احتساب الوقت هيكون كالتالي
+        هناخد الوقت الكلي للفيديو 
+        بعدين هنقسم على عدد النصوص الموجودة الغير فارغة 
+        وبكده تكون كملن ان شاء الله 🚀
+        """
+        
+        top_clips = []
+        bottom_clips = [] 
+
+        
+        files = request.FILES.getlist('images-input')
+        for file in files: 
+            file_path =file.temporary_file_path() 
+            file_content_type = file.content_type 
+            
+            if str(file_content_type).startswith('video/'): 
+                clip = VideoFileClip(file_path)
+            elif str(file_content_type).startswith('image/'): 
+                clip = ImageClip(file_path).set_duration(tpi_input) 
+            
+            if transition == 'fade_in': 
+                clip = transfx.fadein(clip, 1) 
+            elif transition == 'fade_out': 
+                clip = transfx.fadeout(clip, 1) 
+            elif transition == 'slide_in': 
+                clip = CompositeVideoClip([transfx.slide_in(clip, 1, 'left')])
+            elif transition == 'slide_out': 
+                clip = CompositeVideoClip([transfx.slide_out(clip, 1, 'left')])
+            
+            total_duration += clip.duration 
+            clip = clip.set_position('center', 'center') 
+            clips.append(clip)  
+
+        
+        font_size_input = request.POST.get('font-size-input') 
+        if font_size_input != None or font_size_input != '': 
+            try:
+                font_size_input = int(font_size_input) 
+            except: 
+                font_size_input = 16 ## Default
+        text_color = request.POST.get('text-color-input') 
+        bg_color = request.POST.get('bg-color-input') 
+        if bg_color != None or bg_color != "": 
+            bg_color = return_rgb(bg_color)
+
+        tpt =total_duration / len(clips) 
+        last_end = 0 
+
+        final = concatenate_videoclips(clips=clips, method='chain') 
+        final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)))
+
+
+        for txt in new_top_text_list: 
+            if txt == "":
+                continue ### اسطوووري 
+            clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+            clip = clip.set_duration(tpt)
+            clip = clip.set_position(('center','center')) 
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
+            clip = clip.set_start(last_end) 
+            end = tpt + last_end
+            clip = clip.set_end(end) 
+            last_end = end 
+
+            top_clips.append(clip) 
+
+        last_end = 0 
+        end = 0 
+        print('new bottom text list') 
+        print(new_bottom_text_list)
+        print('#' * 30) 
+        for txt in new_bottom_text_list: 
+            if txt == "":
+                continue ### اسطوووري 
+            clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+            clip = clip.set_duration(tpt)
+            clip = clip.set_position(('center','center')) 
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
+            clip = clip.set_start(last_end) 
+            end = tpt + last_end
+            clip = clip.set_end(end) 
+            last_end = end 
+
+            bottom_clips.append(clip) 
+
+        top_text_final = concatenate_videoclips(top_clips, method='chain') 
+        bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
+        final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+        final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+
+        with open('output.mp4', 'rb') as f: 
+            response = HttpResponse(f.read(), content_type='video/mp4') 
+            response['Content-Disposition'] = 'attachment; filename=' + 'output.mp4'
+
+        os.remove('output.mp4') 
+
+        return response 
+
+
+
+        
+
+            
+            
+    context = {} 
+    return render(request, 'video_v2/new_create.html', context)

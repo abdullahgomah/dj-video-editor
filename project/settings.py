@@ -167,7 +167,7 @@ FILE_UPLOAD_HANDLERS = ['django.core.files.uploadhandler.TemporaryFileUploadHand
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
-CRISPY_TEMPLATE_PACK = "bootstrap"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # LOGIN / LOGOUT URLS 
