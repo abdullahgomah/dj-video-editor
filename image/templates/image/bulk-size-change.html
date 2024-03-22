@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}تغيير حجم الصور{% endblock title %}
+
+{% block content %}
+
+
+<section>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    
+    <h1>تغيير حجم الصور</h1>
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="images-input">الصور*</label>
+            <input type="file" name="images-input" class="form-control" id="images-input" multiple accept="image/*" >
+            <p class="form-text">اختر صورة أو أكثر لتغيير حجمها</p>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="size-input">الحجم*</label>
+            <select name="size-input" id="size-input" class="form-select">
+                <option value="" selected disabled>اختر الحجم</option>
+                <option value="instagram-story">قصة انستجرام</option>
+                <option value="facebook-landscape">فيسبوك (عرضي)</option>
+                <option value="facebook-portrait">فيسبوك (طولي)</option>
+                <option value="square">مربع 1080</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-dark">تغيير حجم الصور</button>
+    </form>
+</section>
+
+{% endblock content %}
