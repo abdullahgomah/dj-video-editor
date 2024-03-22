@@ -513,10 +513,12 @@ def new_create(request):
                 formated_top_text = []  
                 for word in top_text_list[i].split(' '):
                     formated = reshaper.reshape(word)
-                    #text_to_display = get_display(formated) 
-                    formated_top_text.append(formated)
+                    text_to_display = get_display(formated) 
+                    # formated_top_text.append(formated)
+                    formated_top_text.append(text_to_display)
 
                     top_text = get_display(' '.join(formated_top_text) )
+                    # top_text = ' '.join(formated_top_text)
               
                 new_top_text_list.append(top_text) 
         
@@ -524,10 +526,12 @@ def new_create(request):
             formated_top_text = []  
             for word in bottom_text_list[i].split(' '):
                 formated = reshaper.reshape(word)
-                #text_to_display = get_display(formated) 
-                formated_top_text.append(formated)
+                text_to_display = get_display(formated) 
+                # formated_top_text.append(text_to_display)
+                formated_top_text.append(text_to_display)
 
                 bottom_text = get_display(' '.join(formated_top_text) )
+                # bottom_text = ' '.join(formated_top_text) 
             
             new_bottom_text_list.append(bottom_text) 
         
