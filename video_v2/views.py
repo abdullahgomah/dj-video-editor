@@ -590,8 +590,9 @@ def new_create(request):
         final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)))
 
 
-        for txt in new_top_text_list: 
-            if txt == "":
+        # for txt in new_top_text_list: 
+        for txt in top_text_list: 
+            if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
             clip = clip.set_duration(tpt)
@@ -610,8 +611,9 @@ def new_create(request):
         print('new bottom text list') 
         print(new_bottom_text_list)
         print('#' * 30) 
-        for txt in new_bottom_text_list: 
-            if txt == "":
+        # for txt in new_bottom_text_list: 
+        for txt in bottom_text_list: 
+            if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
             clip = clip.set_duration(tpt)
