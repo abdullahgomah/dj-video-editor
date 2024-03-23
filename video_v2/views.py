@@ -470,6 +470,21 @@ def create_text_clip(txt, font_color, bg_color, font_size):
 @login_required
 def new_create(request): 
     if request.POST: 
+        font_size_input = request.POST.get('font-size-input') 
+
+        end_screen_main_text = request.POST.get('end-screen-main-txt') 
+        end_screen_url_text = request.POST.get('end-screen-url-txt')
+        end_screen_bg = request.POST.get('end-scrren-bg')
+        end_screen_fg = request.POST.get('end-scrren-fg') 
+
+        if end_screen_bg != None or end_screen_bg != "": 
+            end_screen_bg = return_rgb(end_screen_bg)
+
+        print(end_screen_main_text) 
+        print(end_screen_url_text)
+        print(end_screen_bg) 
+        print(end_screen_fg) 
+
         res = request.POST.get('video-res') 
         transition = request.POST.get('transition-select')
         tpi_input = request.POST.get('tpi-input') 
@@ -490,6 +505,19 @@ def new_create(request):
         elif res == 'square': 
             width = 1080 
             height = 1080 
+
+
+        ## Start End Screen Creation 
+        end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
+        if end_screen_main_text != None or str(end_screen_main_text).strip() == "": 
+            end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4).set_position('center', 'center') 
+        
+        if end_screen_url_text != None or str(end_screen_url_text).strip() == "": 
+            end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
+            end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+        
+        final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+
 
         top_text_1 = request.POST.get('top-text-input-1') 
         top_text_2 = request.POST.get('top-text-input-2') 
@@ -557,6 +585,10 @@ def new_create(request):
                 clip = VideoFileClip(file_path)
             elif str(file_content_type).startswith('image/'): 
                 clip = ImageClip(file_path).set_duration(tpi_input) 
+                if clip.size[0] > clip.size[1]: 
+                    clip = resize(clip, height=height) 
+                else: 
+                    clip = resize(clip, width=width) 
             
             if transition == 'fade_in': 
                 clip = transfx.fadein(clip, 1) 
@@ -570,9 +602,9 @@ def new_create(request):
             total_duration += clip.duration 
             clip = clip.set_position('center', 'center') 
             clips.append(clip)  
+        
 
         
-        font_size_input = request.POST.get('font-size-input') 
         if font_size_input != None or font_size_input != '': 
             try:
                 font_size_input = int(font_size_input) 
@@ -630,7 +662,9 @@ def new_create(request):
         top_text_final = concatenate_videoclips(top_clips, method='chain') 
         bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
         final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
-        final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+        final = concatenate_videoclips([final, final_end_screen], method='chain')
+        # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+        final.write_videofile('output.mp4', fps=30, threads=12)
 
         with open('output.mp4', 'rb') as f: 
             response = HttpResponse(f.read(), content_type='video/mp4') 
@@ -642,9 +676,5 @@ def new_create(request):
 
 
 
-        
-
-            
-            
     context = {} 
     return render(request, 'video_v2/new_create.html', context)
