@@ -471,6 +471,10 @@ def create_text_clip(txt, font_color, bg_color, font_size):
 def new_create(request): 
     if request.POST: 
         font_size_input = request.POST.get('font-size-input') 
+        opacity_input = request.POST.get('opacity-input') 
+
+        if opacity_input != None or opacity_input != "": 
+            opacity_input = float(opacity_input) 
 
         end_screen_main_text = request.POST.get('end-screen-main-txt') 
         end_screen_url_text = request.POST.get('end-screen-url-txt')
@@ -629,7 +633,7 @@ def new_create(request):
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
             clip = clip.set_duration(tpt)
             clip = clip.set_position(('center','center')) 
-            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
             clip = clip.set_start(last_end) 
             end = tpt + last_end
@@ -650,7 +654,7 @@ def new_create(request):
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
             clip = clip.set_duration(tpt)
             clip = clip.set_position(('center','center')) 
-            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
             clip = clip.set_start(last_end) 
             end = tpt + last_end
