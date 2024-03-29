@@ -470,6 +470,20 @@ def create_text_clip(txt, font_color, bg_color, font_size):
 @login_required
 def new_create(request): 
     if request.POST: 
+        audio_input = request.FILES.get('audio-input')
+        audio_clip = None 
+
+        if audio_input != None: 
+            audio_content_type = audio_input.content_type 
+            audio_path = audio_input.temporary_file_path() 
+
+            if str(audio_content_type).startswith('audio/'): 
+                audio_clip = AudioFileClip(audio_path) 
+            elif str(audio_content_type).startswith('video/'): 
+                audio_clip = VideoFileClip(audio_path).audio 
+
+    
+        
         font_size_input = request.POST.get('font-size-input') 
         opacity_input = request.POST.get('opacity-input') 
 
@@ -484,10 +498,6 @@ def new_create(request):
         if end_screen_bg != None or end_screen_bg != "": 
             end_screen_bg = return_rgb(end_screen_bg)
 
-        print(end_screen_main_text) 
-        print(end_screen_url_text)
-        print(end_screen_bg) 
-        print(end_screen_fg) 
 
         res = request.POST.get('video-res') 
         transition = request.POST.get('transition-select')
@@ -667,6 +677,12 @@ def new_create(request):
         bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
         final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
         final = concatenate_videoclips([final, final_end_screen], method='chain')
+
+        if audio_clip != None: 
+            if audio_clip.duration > final.duration: 
+                audio_clip = audio_clip.set_start(0).set_end(final.duration) 
+            final = final.set_audio(audio_clip) 
+
         # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
         final.write_videofile('output.mp4', fps=30, threads=12)
 
