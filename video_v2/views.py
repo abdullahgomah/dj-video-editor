@@ -604,7 +604,7 @@ def new_create(request):
             file_content_type = file.content_type 
             
             if str(file_content_type).startswith('video/'): 
-                clip = VideoFileClip(file_path).without_audio()
+                clip = VideoFileClip(file_path)
             elif str(file_content_type).startswith('image/'): 
                 clip = ImageClip(file_path).set_duration(tpi_input) 
             
@@ -690,6 +690,7 @@ def new_create(request):
         final = concatenate_videoclips([final, final_end_screen], method='chain')
 
         if audio_clip != None: 
+            final = final.without_audio() 
             if audio_clip.duration > final.duration: 
                 audio_clip = audio_clip.set_start(0).set_end(final.duration) 
             elif audio_clip.duration < final.duration: 
