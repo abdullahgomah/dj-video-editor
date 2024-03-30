@@ -596,7 +596,7 @@ def new_create(request):
             file_content_type = file.content_type 
             
             if str(file_content_type).startswith('video/'): 
-                clip = VideoFileClip(file_path)
+                clip = VideoFileClip(file_path).without_audio()
             elif str(file_content_type).startswith('image/'): 
                 clip = ImageClip(file_path).set_duration(tpi_input) 
                 if clip.size[0] > clip.size[1]: 
@@ -688,7 +688,7 @@ def new_create(request):
         # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
         final.write_videofile('output.mp4', fps=30, threads=12)
 
-        with open('output.mp4', 'rb') as f: 
+        with open('output.mp4', 'rb') as f:
             response = HttpResponse(f.read(), content_type='video/mp4') 
             response['Content-Disposition'] = 'attachment; filename=' + 'output.mp4'
 
