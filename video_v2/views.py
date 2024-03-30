@@ -473,6 +473,9 @@ def new_create(request):
         audio_input = request.FILES.get('audio-input')
         audio_clip = None 
 
+
+        resize_files_input = request.POST.get('resize-files-input') 
+
         if audio_input != None: 
             audio_content_type = audio_input.content_type 
             audio_path = audio_input.temporary_file_path() 
@@ -599,6 +602,9 @@ def new_create(request):
                 clip = VideoFileClip(file_path).without_audio()
             elif str(file_content_type).startswith('image/'): 
                 clip = ImageClip(file_path).set_duration(tpi_input) 
+            
+            
+            if resize_files_input == 'on': 
                 if clip.size[0] > clip.size[1]: 
                     clip = resize(clip, height=height) 
                 else: 
