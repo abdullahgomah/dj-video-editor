@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import redirect, render 
 from moviepy.editor import *
-from moviepy.editor import transfx, vfx 
+from moviepy.editor import transfx, vfx
 from moviepy.video.fx.resize import resize
 from django.contrib.auth.decorators import login_required
 
@@ -681,6 +681,8 @@ def new_create(request):
         if audio_clip != None: 
             if audio_clip.duration > final.duration: 
                 audio_clip = audio_clip.set_start(0).set_end(final.duration) 
+            elif audio_clip.duration < final.duration: 
+                audio_clip = afx.audio_loop(audio_clip, int(final.duration)) 
             final = final.set_audio(audio_clip) 
 
         # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
