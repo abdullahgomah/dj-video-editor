@@ -491,7 +491,12 @@ def new_create(request):
         opacity_input = request.POST.get('opacity-input') 
 
         if opacity_input != None or opacity_input != "": 
-            opacity_input = float(opacity_input) 
+            try: 
+                opacity_input = float(opacity_input) 
+            except: 
+                opacity_input = .75
+        else: 
+            opacity_input = 0.75
 
         end_screen_main_text = request.POST.get('end-screen-main-txt') 
         end_screen_url_text = request.POST.get('end-screen-url-txt')
