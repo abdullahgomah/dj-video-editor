@@ -610,11 +610,17 @@ def new_create(request):
             
             
             if resize_files_input == 'on': 
-                if clip.size[0] > clip.size[1]: 
-                    clip = resize(clip, height=height) 
-                else: 
-                    clip = resize(clip, width=width) 
+                # if clip.size[0] > clip.size[1]: 
+                #     clip = resize(clip, height=height) 
+                # else: 
+                #     clip = resize(clip, width=width) 
+                # clip = resize(clip, width=width) 
+                clip = clip.fx(vfx.resize, width=width)
+                # if clip.size[0] > width * 1.1:  # Adjust as necessary
+                #     clip = resize(clip, width=width)  # Maintains aspect ratio
             
+            clip = CompositeVideoClip([clip.set_position('center', 'center')], size=((width, height)))
+
             if transition == 'fade_in': 
                 clip = transfx.fadein(clip, 1) 
             elif transition == 'fade_out': 
