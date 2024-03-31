@@ -335,7 +335,7 @@ def combine_images(request):
             end_url_clip = CompositeVideoClip([end_screen_url_color_clip, end_screen_url.set_position(('center', "center"))]) 
             end_url_clip= end_url_clip.fx(transfx.slide_in, duration=1, side='left')
 
-            end_clip = CompositeVideoClip([end_screen, end_screen_text, end_url_clip.set_position(("center", ((height / 2) + 40)))])
+            end_clip = CompositeVideoClip([end_screen, end_screen_text, end_url_clip.set_position(("center", ((height / 2) + 30)))])
 
             composite_clips.append(end_clip) 
 
