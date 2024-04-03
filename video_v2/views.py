@@ -634,7 +634,9 @@ def new_create(request):
             clip = clip.set_position('center', 'center') 
             clips.append(clip)  
         
-
+        print('TOTOAL DURATION') 
+        print(total_duration) 
+        print('=======') 
         
         if font_size_input != None or font_size_input != '': 
             try:
@@ -647,7 +649,14 @@ def new_create(request):
             bg_color = return_rgb(bg_color)
 
         tpt =total_duration / len(clips) 
+        top_tpt = total_duration / len(new_top_text_list) 
+        bottom_tpt = total_duration / len(new_bottom_text_list) 
         last_end = 0 
+
+        print('TPT') 
+        print(tpt) 
+        print('================')
+
 
         final = concatenate_videoclips(clips=clips, method='chain') 
         final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)))
@@ -658,12 +667,12 @@ def new_create(request):
             if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-            clip = clip.set_duration(tpt)
+            clip = clip.set_duration(top_tpt)
             clip = clip.set_position(('center','center')) 
             color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
             clip = clip.set_start(last_end) 
-            end = tpt + last_end
+            end = top_tpt + last_end
             clip = clip.set_end(end) 
             last_end = end 
 
@@ -671,7 +680,7 @@ def new_create(request):
 
         last_end = 0 
         end = 0 
-        print('new bottom text list') 
+        print('new bottom text list')
         print(new_bottom_text_list)
         print('#' * 30) 
         # for txt in new_bottom_text_list: 
@@ -679,12 +688,12 @@ def new_create(request):
             if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-            clip = clip.set_duration(tpt)
+            clip = clip.set_duration(bottom_tpt)
             clip = clip.set_position(('center','center')) 
             color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
             clip = clip.set_start(last_end) 
-            end = tpt + last_end
+            end = bottom_tpt + last_end
             clip = clip.set_end(end) 
             last_end = end 
 
