@@ -659,7 +659,7 @@ def new_create(request):
 
 
         final = concatenate_videoclips(clips=clips, method='chain') 
-        final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)))
+        final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)), bg_color=bg_color)
 
 
         # for txt in new_top_text_list: 
@@ -713,7 +713,7 @@ def new_create(request):
             final = final.set_audio(audio_clip) 
 
         # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
-        final.write_videofile('output.mp4', fps=30, threads=12)
+        final.write_videofile('output.mp4', fps=30, threads=12, preset='ultrafast') 
 
         with open('output.mp4', 'rb') as f:
             response = HttpResponse(f.read(), content_type='video/mp4') 
@@ -727,3 +727,56 @@ def new_create(request):
 
     context = {} 
     return render(request, 'video_v2/new_create.html', context)
+
+
+import os
+import subprocess
+from django.shortcuts import render
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  # Consider handling CSRF properly in production
+def upload_and_create_video_with_ffmpeg(request):
+    if request.method == 'POST':
+        images = request.FILES.getlist('files-input')
+        if images:
+            image_paths = []
+            for i, image in enumerate(images):
+                # Save each image to MEDIA_ROOT and collect their paths
+                # Ensure images are named sequentially to maintain order
+                filename = f"{i:03d}_{image.name}"
+                path = os.path.join(settings.MEDIA_ROOT, filename)
+                with open(path, 'wb+') as destination:
+                    for chunk in image.chunks():
+                        destination.write(chunk)
+                image_paths.append(path)
+
+            # Generate a file listing all image paths
+            filelist_path = os.path.join(settings.MEDIA_ROOT, 'filelist.txt')
+            with open(filelist_path, 'w', encoding='utf-8') as filelist:
+                for path in image_paths:
+                    filelist.write(f"file '{path}'\n")
+                    filelist.write(f"duration 4\n")
+            
+            # Exclude duration for the last image to avoid a duplicate frame issue
+            with open(filelist_path, 'a', encoding='utf-8') as filelist:
+                filelist.write(f"file '{image_paths[-1]}'\n")
+            
+            # Use ffmpeg to create a video from the images
+            video_path = os.path.join(settings.MEDIA_ROOT, 'output.mp4')
+            ffmpeg_cmd = [
+                'ffmpeg', '-f', 'concat', '-safe', '0', '-i', filelist_path,
+                '-vsync', 'vfr', '-pix_fmt', 'yuv420p', '-r', '30', video_path
+            ]
+            subprocess.run(ffmpeg_cmd, check=True)
+            
+            # Serve video file for download
+            with open(video_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type='video/mp4')
+                response['Content-Disposition'] = 'attachment; filename="output.mp4"'
+                return response
+        else:
+            return HttpResponse("No images were uploaded.", status=400)
+    else:
+        return render(request, 'upload_form.html')
