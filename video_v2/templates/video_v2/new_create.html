@@ -17,6 +17,16 @@
                 <input type="file" accept="image/*,video/*" id="images-input" multiple required name="images-input" class="form-control">
             </div>
             <div class="mb-3">
+                <label for="resize-files-input">الصور تملأ الشاشة</label>
+                <input type="checkbox" name="resize-files-input" id="resize-files-input">
+                <p class="form-text">حدد ما إن كنت تريد ملأ الإطار بالصور والفيديوهات المرفوعة</p>
+            </div>
+            <div class="mb-3">
+                <label for="audio-input" class="form-label">الصوت</label>
+                <input type="file" name="audio-input" id="audio-input" class="form-control" accept="video/*,audio/*">
+                <p class="form-text">اختر ملف صوتي او فيديو</p>
+            </div>
+            <div class="mb-3">
                 <label for="tpi-input" class="form-label">الوقت لكل صورة</label>
                 <input type="text" name="tpi-input" id='tpi-input' class="form-control" placeholder="أدخل الوقت المحدد لكل صورة">
             </div>
@@ -73,7 +83,7 @@
             <div class="mb-3">
                 <label for="res-input" class="form-label">مقاس الفيديو*</label>
                 <select class="form-select" name="video-res" aria-label="Default select example" required>
-                    <option selected>اختر مقاس الفيديو</option>
+                    <option selected disabled>اختر مقاس الفيديو</option>
                     <option value="facebook1">فيسبوك 1200x628</option>
                     <option value="facebook2">فيسبوك 810x450</option>
                     <option value="tiktok-snapchat">سناب شات / تيكتوك</option>
@@ -88,9 +98,51 @@
                 <label for="bg-color-input">لون الخلفية</label>
                 <input type="color" name="bg-color-input" id="bg-color-input" class="form-control">
             </div>
+            <!--
+            <div class="mb-3">
+                <label for=""class='form-label'>درجة شفافية الخلفية*</label>
+                <input type="text" class="form-control" placeholder="درجة شفافية الخلفية من 0 لـ 1" required name="opacity-input">
+            </div>
+        --> 
+        <div class="mb-3">
+            <label for="" class='form-label'>درجة شفافية الخلفية*</label>
+            <select class="form-select" required name="opacity-input">
+                <option disabled selected>اختر درجة الشفافية</option>
+                <option value="0.0">0.0</option>
+                <option value="0.1">0.1</option>
+                <option value="0.2">0.2</option>
+                <option value="0.3">0.3</option>
+                <option value="0.4">0.4</option>
+                <option value="0.5">0.5</option>
+                <option value="0.6">0.6</option>
+                <option value="0.7">0.7</option>
+                <option value="0.8">0.8</option>
+                <option value="0.9">0.9</option>
+                <option value="1.0">1.0</option>
+            </select>
+        </div>
         </div>
         <div class="col-md-6">
             <h4>إعدادات شاشة النهاية</h4>
+            <div class="mb-3">
+                <label for="end-screen-main-txt" class="form-label">
+                    نص شاشة النهاية*
+                </label>
+                <input type="text" class="form-control" id="end-screen-main-txt" name="end-screen-main-txt" placeholder="اكتب نص شاشة النهاية" required>
+            </div>
+            <div class="mb-3">
+                <label for="end-screen-url-txt" class="form-label">الرابط/الرقم*</label>
+                <input type="text" id="end-screen-url-txt" name="end-screen-url-txt" class="form-control" placeholder="ادخل رقم / رابط" required>
+            </div>
+            <div class="mb-3">
+                <label for="end-screen-bg">لون الخلفية*</label>
+                <input type="color" name="end-scrren-bg" id="end-scrren-bg" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="end-screen-fg">لون النص*</label>
+                <input type="color" name="end-scrren-fg" id="end-scrren-fg" class="form-control">
+            </div>
+
         </div>
     </div>
     <button type="submit" class="btn btn-dark">ابدأ</button>

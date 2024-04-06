@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import redirect, render 
 from moviepy.editor import *
-from moviepy.editor import transfx, vfx 
+from moviepy.editor import transfx, vfx
 from moviepy.video.fx.resize import resize
 from django.contrib.auth.decorators import login_required
 
@@ -335,7 +335,7 @@ def combine_images(request):
             end_url_clip = CompositeVideoClip([end_screen_url_color_clip, end_screen_url.set_position(('center', "center"))]) 
             end_url_clip= end_url_clip.fx(transfx.slide_in, duration=1, side='left')
 
-            end_clip = CompositeVideoClip([end_screen, end_screen_text, end_url_clip.set_position(("center", ((height / 2) + 40)))])
+            end_clip = CompositeVideoClip([end_screen, end_screen_text, end_url_clip.set_position(("center", ((height / 2) + 30)))])
 
             composite_clips.append(end_clip) 
 
@@ -470,6 +470,43 @@ def create_text_clip(txt, font_color, bg_color, font_size):
 @login_required
 def new_create(request): 
     if request.POST: 
+        audio_input = request.FILES.get('audio-input')
+        audio_clip = None 
+
+
+        resize_files_input = request.POST.get('resize-files-input') 
+
+        if audio_input != None: 
+            audio_content_type = audio_input.content_type 
+            audio_path = audio_input.temporary_file_path() 
+
+            if str(audio_content_type).startswith('audio/'): 
+                audio_clip = AudioFileClip(audio_path) 
+            elif str(audio_content_type).startswith('video/'): 
+                audio_clip = VideoFileClip(audio_path).audio 
+
+    
+        
+        font_size_input = request.POST.get('font-size-input') 
+        opacity_input = request.POST.get('opacity-input') 
+
+        if opacity_input != None or opacity_input != "": 
+            try: 
+                opacity_input = float(opacity_input) 
+            except: 
+                opacity_input = .75
+        else: 
+            opacity_input = 0.75
+
+        end_screen_main_text = request.POST.get('end-screen-main-txt') 
+        end_screen_url_text = request.POST.get('end-screen-url-txt')
+        end_screen_bg = request.POST.get('end-scrren-bg')
+        end_screen_fg = request.POST.get('end-scrren-fg') 
+
+        if end_screen_bg != None or end_screen_bg != "": 
+            end_screen_bg = return_rgb(end_screen_bg)
+
+
         res = request.POST.get('video-res') 
         transition = request.POST.get('transition-select')
         tpi_input = request.POST.get('tpi-input') 
@@ -490,6 +527,19 @@ def new_create(request):
         elif res == 'square': 
             width = 1080 
             height = 1080 
+
+
+        ## Start End Screen Creation 
+        end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
+        if end_screen_main_text != None or str(end_screen_main_text).strip() == "": 
+            end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4).set_position('center', 'center') 
+        
+        if end_screen_url_text != None or str(end_screen_url_text).strip() == "": 
+            end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
+            end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+        
+        final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+
 
         top_text_1 = request.POST.get('top-text-input-1') 
         top_text_2 = request.POST.get('top-text-input-2') 
@@ -558,6 +608,19 @@ def new_create(request):
             elif str(file_content_type).startswith('image/'): 
                 clip = ImageClip(file_path).set_duration(tpi_input) 
             
+            
+            if resize_files_input == 'on': 
+                # if clip.size[0] > clip.size[1]: 
+                #     clip = resize(clip, height=height) 
+                # else: 
+                #     clip = resize(clip, width=width) 
+                # clip = resize(clip, width=width) 
+                clip = clip.fx(vfx.resize, width=width)
+                # if clip.size[0] > width * 1.1:  # Adjust as necessary
+                #     clip = resize(clip, width=width)  # Maintains aspect ratio
+            
+            clip = CompositeVideoClip([clip.set_position('center', 'center')], size=((width, height)))
+
             if transition == 'fade_in': 
                 clip = transfx.fadein(clip, 1) 
             elif transition == 'fade_out': 
@@ -570,9 +633,11 @@ def new_create(request):
             total_duration += clip.duration 
             clip = clip.set_position('center', 'center') 
             clips.append(clip)  
-
         
-        font_size_input = request.POST.get('font-size-input') 
+        print('TOTOAL DURATION') 
+        print(total_duration) 
+        print('=======') 
+        
         if font_size_input != None or font_size_input != '': 
             try:
                 font_size_input = int(font_size_input) 
@@ -584,10 +649,17 @@ def new_create(request):
             bg_color = return_rgb(bg_color)
 
         tpt =total_duration / len(clips) 
+        top_tpt = total_duration / len(new_top_text_list) 
+        bottom_tpt = total_duration / len(new_bottom_text_list) 
         last_end = 0 
 
+        print('TPT') 
+        print(tpt) 
+        print('================')
+
+
         final = concatenate_videoclips(clips=clips, method='chain') 
-        final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)))
+        final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)), bg_color=bg_color)
 
 
         # for txt in new_top_text_list: 
@@ -595,12 +667,12 @@ def new_create(request):
             if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-            clip = clip.set_duration(tpt)
+            clip = clip.set_duration(top_tpt)
             clip = clip.set_position(('center','center')) 
-            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
             clip = clip.set_start(last_end) 
-            end = tpt + last_end
+            end = top_tpt + last_end
             clip = clip.set_end(end) 
             last_end = end 
 
@@ -608,7 +680,7 @@ def new_create(request):
 
         last_end = 0 
         end = 0 
-        print('new bottom text list') 
+        print('new bottom text list')
         print(new_bottom_text_list)
         print('#' * 30) 
         # for txt in new_bottom_text_list: 
@@ -616,12 +688,12 @@ def new_create(request):
             if txt == "" or str(txt).strip() == "":
                 continue ### اسطوووري 
             clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-            clip = clip.set_duration(tpt)
+            clip = clip.set_duration(bottom_tpt)
             clip = clip.set_position(('center','center')) 
-            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(.6)
+            color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
             clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
             clip = clip.set_start(last_end) 
-            end = tpt + last_end
+            end = bottom_tpt + last_end
             clip = clip.set_end(end) 
             last_end = end 
 
@@ -630,9 +702,20 @@ def new_create(request):
         top_text_final = concatenate_videoclips(top_clips, method='chain') 
         bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
         final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
-        final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+        final = concatenate_videoclips([final, final_end_screen], method='chain')
 
-        with open('output.mp4', 'rb') as f: 
+        if audio_clip != None: 
+            final = final.without_audio() 
+            if audio_clip.duration > final.duration: 
+                audio_clip = audio_clip.set_start(0).set_end(final.duration) 
+            elif audio_clip.duration < final.duration: 
+                audio_clip = afx.audio_loop(audio_clip, int(final.duration)) 
+            final = final.set_audio(audio_clip) 
+
+        # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+        final.write_videofile('output.mp4', fps=30, threads=12, preset='ultrafast') 
+
+        with open('output.mp4', 'rb') as f:
             response = HttpResponse(f.read(), content_type='video/mp4') 
             response['Content-Disposition'] = 'attachment; filename=' + 'output.mp4'
 
@@ -642,9 +725,58 @@ def new_create(request):
 
 
 
-        
-
-            
-            
     context = {} 
     return render(request, 'video_v2/new_create.html', context)
+
+
+import os
+import subprocess
+from django.shortcuts import render
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  # Consider handling CSRF properly in production
+def upload_and_create_video_with_ffmpeg(request):
+    if request.method == 'POST':
+        images = request.FILES.getlist('files-input')
+        if images:
+            image_paths = []
+            for i, image in enumerate(images):
+                # Save each image to MEDIA_ROOT and collect their paths
+                # Ensure images are named sequentially to maintain order
+                filename = f"{i:03d}_{image.name}"
+                path = os.path.join(settings.MEDIA_ROOT, filename)
+                with open(path, 'wb+') as destination:
+                    for chunk in image.chunks():
+                        destination.write(chunk)
+                image_paths.append(path)
+
+            # Generate a file listing all image paths
+            filelist_path = os.path.join(settings.MEDIA_ROOT, 'filelist.txt')
+            with open(filelist_path, 'w', encoding='utf-8') as filelist:
+                for path in image_paths:
+                    filelist.write(f"file '{path}'\n")
+                    filelist.write(f"duration 4\n")
+            
+            # Exclude duration for the last image to avoid a duplicate frame issue
+            with open(filelist_path, 'a', encoding='utf-8') as filelist:
+                filelist.write(f"file '{image_paths[-1]}'\n")
+            
+            # Use ffmpeg to create a video from the images
+            video_path = os.path.join(settings.MEDIA_ROOT, 'output.mp4')
+            ffmpeg_cmd = [
+                'ffmpeg', '-f', 'concat', '-safe', '0', '-i', filelist_path,
+                '-vsync', 'vfr', '-pix_fmt', 'yuv420p', '-r', '30', video_path
+            ]
+            subprocess.run(ffmpeg_cmd, check=True)
+            
+            # Serve video file for download
+            with open(video_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type='video/mp4')
+                response['Content-Disposition'] = 'attachment; filename="output.mp4"'
+                return response
+        else:
+            return HttpResponse("No images were uploaded.", status=400)
+    else:
+        return render(request, 'upload_form.html')
