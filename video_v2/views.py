@@ -488,6 +488,17 @@ def new_create(request):
     
         
         font_size_input = request.POST.get('font-size-input') 
+
+        
+        if font_size_input != None or font_size_input != '': 
+            try:
+                font_size_input = int(font_size_input) 
+            except: 
+                font_size_input = 16 ## Default
+        else: 
+            font_size_input = 16
+
+            
         opacity_input = request.POST.get('opacity-input') 
 
         if opacity_input != None or opacity_input != "": 
@@ -637,12 +648,7 @@ def new_create(request):
         print('TOTOAL DURATION') 
         print(total_duration) 
         print('=======') 
-        
-        if font_size_input != None or font_size_input != '': 
-            try:
-                font_size_input = int(font_size_input) 
-            except: 
-                font_size_input = 16 ## Default
+
         text_color = request.POST.get('text-color-input') 
         bg_color = request.POST.get('bg-color-input') 
         if bg_color != None or bg_color != "": 
