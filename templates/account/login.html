@@ -78,7 +78,7 @@
       <!-- <button class="primaryAction btn btn-solid-dark" type="submit">{% trans "Sign In" %}</button> -->
       <div class="cta">
         <button class="primaryAction btn btn-dark" type="submit">تسجيل دخول</button>
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">هل نسيت كلمة السر؟</a>
+        <!-- <a class="button secondaryAction" href="{% url 'account_reset_password' %}">هل نسيت كلمة السر؟</a> -->
       </div>
 
       {% if messages %}
@@ -121,7 +121,7 @@
   
   document.querySelector('#id_login').setAttribute('placeholder', 'اسم المستخدم') 
   document.querySelector('#id_password').setAttribute('placeholder', 'كلمة السر') 
-  
+  document.querySelector('#id_password_helptext').querySelector('a').textContent = 'هل نسيت كلمة المرور؟'
     
 </script>
 
