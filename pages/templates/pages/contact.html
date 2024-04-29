@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label for="Select" class="form-label">اختر الباقة</label>
-            <select id="Select" class="form-select" name="plan">
+            <select id="Select" class="form-select" name="plan" required>
                 {% for plan in plans %}
                     <option>{{plan}}</option>
                 {% endfor %}
@@ -32,7 +32,7 @@
 
         <div class="mb-3">
             <label for="details" class="form-label" >تفاصيل</label>
-            <textarea id="details" class="form-control" name="details"></textarea>
+            <textarea id="details" class="form-control" name="details" required></textarea>
         </div>
       
 
