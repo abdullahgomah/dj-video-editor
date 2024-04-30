@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import os 
-from moviepy.editor import *
+from moviepy.editor import * 
 from pydub import AudioSegment
 from pay.models import Subscription, Plan, Feature 
 import datetime 
@@ -10,8 +10,8 @@ import datetime
 # Create your views here.
 
 
-AudioSegment.ffmpeg = '/usr/local/bin/ffmpeg' 
-AudioSegment.converter = '/usr/local/bin/ffmpeg'
+# AudioSegment.ffmpeg = '/usr/local/bin/ffmpeg' 
+# AudioSegment.converter = '/usr/local/bin/ffmpeg'
 
 
 
@@ -19,7 +19,6 @@ AudioSegment.converter = '/usr/local/bin/ffmpeg'
 def change_audio_speed(request):
 
     user = request.user 
-
 
     try:
         subscription = Subscription.objects.get(user=user)
@@ -46,11 +45,12 @@ def change_audio_speed(request):
         audio_file = request.FILES['audio_file']
         speed_factor = float(request.POST['speed_factor'])
 
-        # # Save the uploaded audio file to a temporary file
+        # Save the uploaded audio file to a temporary file
         # with open('temp_audio.mp3', 'wb+') as destination:
         #     for chunk in audio_file.chunks():
         #         destination.write(chunk)
 
+ 
         # Open the audio file with PyDub
         audio_segment = AudioSegment.from_file_using_temporary_files(audio_file)
 
@@ -59,7 +59,7 @@ def change_audio_speed(request):
 
         # Save the new audio to a file
         new_filename = 'modified_audio.mp3'
-        new_audio_segment.export(new_filename, format='mp3')
+        new_audio_segment.export(new_filename, format='mp3', codec='libmp3lame')
 
         # Serve the new audio for download
         with open(new_filename, 'rb') as f:
