@@ -59,7 +59,7 @@ def change_audio_speed(request):
 
         # Save the new audio to a file
         new_filename = 'modified_audio.mp3'
-        new_audio_segment.export(new_filename, format='mp3', codec='libmp3lame')
+        new_audio_segment.export(new_filename, format='mp3', codec='libavcodec')
 
         # Serve the new audio for download
         with open(new_filename, 'rb') as f:
