@@ -9,6 +9,12 @@ import datetime
 
 # Create your views here.
 
+
+try:
+    AudioSegment.ffmpeg = '/usr/local/bin/ffmpeg' 
+except: 
+    pass 
+
 @login_required
 def change_audio_speed(request):
 
