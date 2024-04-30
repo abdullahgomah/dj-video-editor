@@ -46,7 +46,11 @@ def change_audio_speed(request):
         #         destination.write(chunk)
 
         # Open the audio file with PyDub
-        audio_segment = AudioSegment.from_file_using_temporary_files(audio_file)
+        try:
+            audio_segment = AudioSegment.from_file_using_temporary_files(audio_file)
+        except: 
+            pass # return to error page 
+
 
         # Change the speed of the audio
         new_audio_segment = audio_segment.speedup(speed_factor)

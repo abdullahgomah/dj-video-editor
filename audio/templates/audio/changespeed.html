@@ -13,7 +13,7 @@
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         <p>الصوت*</p>
-        <input type="file" name="audio_file" accept="audio/*,audio/mpeg,audio/wav,audio/ogg,audio/mp3,.mp3,.wav,.ogg,.mpeg" class="form-control" required>
+        <input type="file" name="audio_file" accept="audio/webm,audio/mpeg,audio/wav,audio/ogg,audio/mp3,.mp3,.wav,.ogg,.mpeg" class="form-control" required>
 
         <br>
         <p>سرعة الصوت*</p>
