@@ -13,11 +13,11 @@
     <form action="" method="POST" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         <p>الصوت*</p>
-        <input type="file" name="audio_file" accept="audio/*" class="form-control">
+        <input type="file" name="audio_file" accept="audio/*,audio/mpeg,audio/wav,audio/ogg,audio/mp3,.mp3,.wav,.ogg,.mpeg" class="form-control" required>
 
         <br>
-        <p>سرعة الفيديو*</p>
-        <input type="text" name="speed_factor" class="form-control" placeholder="ادخل سرعة الصوت بالأرقام (1 ، 1.5 ، 2.5)">
+        <p>سرعة الصوت*</p>
+        <input type="text" name="speed_factor" class="form-control" placeholder="ادخل سرعة الصوت بالأرقام (1 ، 1.5 ، 2.5)" required>
 
         <br>
 
