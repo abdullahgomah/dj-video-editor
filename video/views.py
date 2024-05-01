@@ -450,8 +450,38 @@ def combine_video_withlogo(request):
             audio = request.FILES['audio_file']
             logo = request.FILES['logo_file']
             tpi = request.POST['time_per_img']
-            top_text = get_display(reshaper.reshape(request.POST['top_text']))
-            bottom_text = get_display(reshaper.reshape(request.POST['bottom_text']) )
+            # top_text = get_display(reshaper.reshape(request.POST['top_text']))
+            # bottom_text = get_display(reshaper.reshape(request.POST['bottom_text']) )
+
+            top_text = request.POST.get('top_text') 
+            bottom_text = request.POST.get('bottom_text') 
+
+
+            if top_text != None or top_text != "" or top_text != " " or len(top_text) != 0: 
+                formated_top_text = []  
+                for word in top_text.split(' '):
+                    formated = reshaper.reshape(word)
+                    text_to_display = get_display(formated)
+                    # formated_top_text.append(formated)
+                    formated_top_text.append(text_to_display)
+
+                top_text = get_display(' '.join(formated_top_text) )
+                # top_text = ' '.join(formated_top_text)
+            
+
+            
+            if bottom_text != None or bottom_text != "" or bottom_text != " " or len(bottom_text) != 0: 
+                formated_bottom_text = []  
+                for word in bottom_text.split(' '):
+                    formated = reshaper.reshape(word)
+                    text_to_display = get_display(formated)
+                    # formated_bottom_text.append(formated)
+                    formated_bottom_text.append(text_to_display)
+
+                bottom_text = get_display(' '.join(formated_bottom_text) )
+                # top_text = ' '.join(formated_top_text)
+            
+
 
             end_text = request.POST.get('end_screen_text')
             end_url = request.POST.get('end_screen_url') 
