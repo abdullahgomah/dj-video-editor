@@ -525,9 +525,9 @@ def new_create(request):
                 try:
                     font_size_input = int(font_size_input) 
                 except: 
-                    font_size_input = 16 ## Default
+                    font_size_input = 20 ## Default
             else: 
-                font_size_input = 16
+                font_size_input = 20
 
 
             opacity_input = request.POST.get('opacity-input') 
@@ -743,10 +743,14 @@ def new_create(request):
 
             if audio_clip != None: 
                 final = final.without_audio() 
+                print('final duration: '+str(final.duration))
+                print("this is audio_clip duration: "+str(audio_clip.duration))
                 if audio_clip.duration > final.duration: 
+                    print('audio_clip.duration>final.duration')
                     audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 elif audio_clip.duration < final.duration: 
-                    audio_clip = afx.audio_loop(audio_clip, int(final.duration)) 
+                    print('audio_clip.duration < final.duration' )
+                    audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
                 final = final.set_audio(audio_clip) 
 
             # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
