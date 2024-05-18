@@ -414,6 +414,8 @@ def combine_imgs_v2(request):
             img_content_type = img.content_type 
             if img_content_type.startswith('video/'): 
                 img = VideoFileClip(img_path).set_position(('center', 'center')) 
+                if float(img.fps == 90000):
+                    continue 
             else: 
                 img = ImageClip(img_path).set_duration(tpi).set_position(('center', 'center'))
 
@@ -672,9 +674,10 @@ def new_create(request):
                 elif transition == 'slide_out': 
                     clip = CompositeVideoClip([transfx.slide_out(clip, 1, 'left')])
                 
-                total_duration += clip.duration 
+                total_duration += clip.duration
                 clip = clip.set_position('center', 'center') 
-                clips.append(clip)  
+                if clip.fps != 90000: 
+                    clips.append(clip)  
             
             print('TOTOAL DURATION') 
             print(total_duration) 
