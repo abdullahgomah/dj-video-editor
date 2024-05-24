@@ -469,6 +469,323 @@ def create_text_clip(txt, font_color, bg_color, font_size):
     clip = TextClip(txt, color=font_color, bg_color=bg_color, fontsize=font_size)
     return clip 
 
+
+def text_preview_export(request):
+
+    user = request.user 
+
+    
+
+    try:
+        subscription = Subscription.objects.get(user=user)
+        if subscription: 
+            if datetime.date.today() > subscription.end_date_time: 
+                # print('Please Renew Your Subscription')
+                # هنا يجب تجديد الاشتراك
+                subscription.delete()
+                return redirect('/pay/plans/') 
+    except:
+        return redirect('/pay/plans') 
+
+
+    features = Feature.objects.get(plan=subscription.plan)
+
+
+    if features.video_imgs_template == True: 
+        pass 
+    else: 
+        return redirect('/pay/plans/')
+
+
+
+    if request.POST: 
+
+        if subscription.videos_per_months != 0:
+
+
+            audio_input = request.FILES.get('audio-input')
+            audio_clip = None 
+
+
+            resize_files_input = request.POST.get('resize-files-input') 
+
+            if audio_input != None: 
+                audio_content_type = audio_input.content_type 
+                audio_path = audio_input.temporary_file_path() 
+
+                if str(audio_content_type).startswith('audio/'): 
+                    audio_clip = AudioFileClip(audio_path) 
+                elif str(audio_content_type).startswith('video/'): 
+                    audio_clip = VideoFileClip(audio_path).audio 
+
+        
+            
+            font_size_input = request.POST.get('font-size-input') 
+
+            
+            if font_size_input != None or font_size_input != '': 
+                try:
+                    font_size_input = int(font_size_input) 
+                except: 
+                    font_size_input = 20 ## Default
+            else: 
+                font_size_input = 20
+
+
+            opacity_input = request.POST.get('opacity-input') 
+
+            if opacity_input != None or opacity_input != "": 
+                try: 
+                    opacity_input = float(opacity_input) 
+                except: 
+                    opacity_input = .75
+            else: 
+                opacity_input = 0.75
+
+            end_screen_main_text = request.POST.get('end-screen-main-txt') 
+            end_screen_url_text = request.POST.get('end-screen-url-txt')
+            end_screen_bg = request.POST.get('end-scrren-bg')
+            end_screen_fg = request.POST.get('end-scrren-fg') 
+
+            if end_screen_bg != None or end_screen_bg != "": 
+                end_screen_bg = return_rgb(end_screen_bg)
+
+
+            res = request.POST.get('video-res') 
+            transition = request.POST.get('transition-select')
+            tpi_input = request.POST.get('tpi-input') 
+            if tpi_input == "" or tpi_input == 0 or tpi_input == None: 
+                tpi_input = 5
+            total_duration = 0 
+            clips = [] 
+            width, height= 1080, 1080
+            if res == 'facebook1': 
+                width = 1200 
+                height = 628  
+            elif res == 'facebook2': 
+                width = 810 
+                height  =  450  
+            elif res == 'tiktok-snapchat': 
+                width = 1080 
+                height = 1920 
+            elif res == 'square': 
+                width = 1080 
+                height = 1080 
+
+
+            ## Start End Screen Creation 
+            end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
+            if end_screen_main_text != None or str(end_screen_main_text).strip() == "": 
+                end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4).set_position('center', 'center') 
+            
+            if end_screen_url_text != None or str(end_screen_url_text).strip() == "": 
+                end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
+                end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+            
+            final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+
+
+            top_text_1 = request.POST.get('top-text-input-1') 
+            top_text_2 = request.POST.get('top-text-input-2') 
+            top_text_3 = request.POST.get('top-text-input-3') 
+            top_text_4 = request.POST.get('top-text-input-4')
+
+            bottom_text_1 = request.POST.get('bottom-text-input-1') 
+            bottom_text_2 = request.POST.get('bottom-text-input-2') 
+            bottom_text_3 = request.POST.get('bottom-text-input-3') 
+            bottom_text_4 = request.POST.get('bottom-text-input-4') 
+
+            top_text_list = [top_text_1, top_text_2, top_text_3, top_text_4]
+            bottom_text_list = [bottom_text_1, bottom_text_2, bottom_text_3, bottom_text_4]
+            new_top_text_list = [] 
+            new_bottom_text_list = [] 
+
+            ## error happen becacuse list decreases, I should solve it using new list to add the value to it 
+            for i in range(int(len(top_text_list))): 
+                print(top_text_list[i]) 
+                if top_text_list[i] != None or top_text_list[i] != "" or top_text_list[i] != " " or len(top_text_list[i]) != 0: 
+                    formated_top_text = []  
+                    for word in top_text_list[i].split(' '):
+                        formated = reshaper.reshape(word)
+                        text_to_display = get_display(formated)
+                        # formated_top_text.append(formated)
+                        formated_top_text.append(text_to_display)
+
+                    top_text = get_display(' '.join(formated_top_text) )
+                    # top_text = ' '.join(formated_top_text)
+                
+                    new_top_text_list.append(top_text) 
+            
+            for i in range(int(len(bottom_text_list))): 
+                formated_top_text = []  
+                for word in bottom_text_list[i].split(' '):
+                    formated = reshaper.reshape(word)
+                    text_to_display = get_display(formated) 
+                    # formated_top_text.append(formated)
+                    formated_top_text.append(text_to_display)
+
+                bottom_text = get_display(' '.join(formated_top_text) )
+                # bottom_text = ' '.join(formated_top_text) 
+                
+                new_bottom_text_list.append(bottom_text) 
+            
+            
+            """
+            المفروض هنا هعمل كليب نصي لكل عنصر من اللي موجودين في القائمة
+            احتساب الوقت هيكون كالتالي
+            هناخد الوقت الكلي للفيديو 
+            بعدين هنقسم على عدد النصوص الموجودة الغير فارغة 
+            وبكده تكون كملن ان شاء الله 🚀
+            """
+            
+            top_clips = []
+            bottom_clips = [] 
+
+            
+            files = request.FILES.getlist('images-input')
+            for file in files: 
+                file_path =file.temporary_file_path() 
+                file_content_type = file.content_type 
+                
+                if str(file_content_type).startswith('video/'): 
+                    clip = VideoFileClip(file_path)
+                elif str(file_content_type).startswith('image/'): 
+                    clip = ImageClip(file_path).set_duration(tpi_input) 
+                
+                
+                if resize_files_input == 'on': 
+                    # if clip.size[0] > clip.size[1]: 
+                    #     clip = resize(clip, height=height) 
+                    # else: 
+                    #     clip = resize(clip, width=width) 
+                    # clip = resize(clip, width=width) 
+                    clip = clip.fx(vfx.resize, width=width)
+                    # if clip.size[0] > width * 1.1:  # Adjust as necessary
+                    #     clip = resize(clip, width=width)  # Maintains aspect ratio
+                
+                clip = CompositeVideoClip([clip.set_position('center', 'center')], size=((width, height)))
+
+                if transition == 'fade_in': 
+                    clip = transfx.fadein(clip, 1) 
+                elif transition == 'fade_out': 
+                    clip = transfx.fadeout(clip, 1) 
+                elif transition == 'slide_in': 
+                    clip = CompositeVideoClip([transfx.slide_in(clip, 1, 'left')])
+                elif transition == 'slide_out': 
+                    clip = CompositeVideoClip([transfx.slide_out(clip, 1, 'left')])
+                
+                total_duration += clip.duration
+                clip = clip.set_position('center', 'center') 
+                if clip.fps != 90000: 
+                    clips.append(clip)  
+            
+            print('TOTOAL DURATION') 
+            print(total_duration) 
+            print('=======') 
+
+            text_color = request.POST.get('text-color-input') 
+            bg_color = request.POST.get('bg-color-input') 
+            if bg_color != None or bg_color != "": 
+                bg_color = return_rgb(bg_color)
+
+            tpt =total_duration / len(clips) 
+            top_tpt = total_duration / len(new_top_text_list) 
+            bottom_tpt = total_duration / len(new_bottom_text_list) 
+            last_end = 0 
+
+            print('TPT') 
+            print(tpt) 
+            print('================')
+
+
+            final = concatenate_videoclips(clips=clips, method='chain') 
+            final = CompositeVideoClip([final.set_position(('center','center'))], size=((width, height)), bg_color=bg_color)
+
+
+            # for txt in new_top_text_list: 
+            for txt in top_text_list: 
+                if txt == "" or str(txt).strip() == "":
+                    continue ### اسطوووري 
+                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                clip = clip.set_duration(top_tpt)
+                clip = clip.set_position(('center','center')) 
+                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
+                clip = clip.set_start(last_end) 
+                end = top_tpt + last_end
+                clip = clip.set_end(end) 
+                last_end = end 
+
+                top_clips.append(clip) 
+
+            last_end = 0 
+            end = 0 
+            print('new bottom text list')
+            print(new_bottom_text_list)
+            print('#' * 30) 
+            # for txt in new_bottom_text_list: 
+            for txt in bottom_text_list: 
+                if txt == "" or str(txt).strip() == "":
+                    continue ### اسطوووري 
+                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                clip = clip.set_duration(bottom_tpt)
+                clip = clip.set_position(('center','center')) 
+                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
+                clip = clip.set_start(last_end) 
+                end = bottom_tpt + last_end
+                clip = clip.set_end(end) 
+                last_end = end 
+
+                bottom_clips.append(clip) 
+
+            top_text_final = concatenate_videoclips(top_clips, method='chain') 
+            bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
+            final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+            final = concatenate_videoclips([final, final_end_screen], method='chain')
+
+            if audio_clip != None: 
+                final = final.without_audio() 
+                print('final duration: '+str(final.duration))
+                print("this is audio_clip duration: "+str(audio_clip.duration))
+                if audio_clip.duration > final.duration: 
+                    print('audio_clip.duration>final.duration')
+                    audio_clip = audio_clip.set_start(0).set_end(final.duration) 
+                elif audio_clip.duration < final.duration: 
+                    print('audio_clip.duration < final.duration' )
+                    audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
+                final = final.set_audio(audio_clip) 
+
+            # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+            print('THIS IS DURATION') 
+            print(final.duration)
+            if final.duration > 6: 
+                final.set_end(6).write_videofile('output.mp4', fps=30, threads=12, preset='ultrafast') 
+            else: 
+                final.write_videofile('output.mp4', fps=30, threads=12, preset='ultrafast') 
+
+            with open('output.mp4', 'rb') as f:
+                response = HttpResponse(f.read(), content_type='video/mp4') 
+                response['Content-Disposition'] = 'attachment; filename=' + 'output.mp4'
+
+            os.remove('output.mp4') 
+            subscription.videos_per_months -= 1 
+            subscription.save() 
+
+
+            return response 
+        else: 
+            subscription.delete() 
+            return redirect('/pay/limit_ended/')
+
+
+
+
+    context = {} 
+    return render(request, 'video_v2/new_create.html', context)
+
+
+
 @login_required
 def new_create(request): 
 

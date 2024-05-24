@@ -225,10 +225,31 @@
     </div>
     <div class="row">
         <div class="container" >
-            <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
+                    <button type="submit" id="btnPreviewExport" class="btn btn-success col-lg-2 col-sm-6 col-md-4 ">تصدير معاينة 6 ثواني</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
+
+
+<script>
+
+    let btnPreviewExport = document.querySelector('#btnPreviewExport'); 
+    let form = document.querySelector('form'); 
+
+
+    btnPreviewExport.addEventListener('click', (e)=> {
+        e.preventDefault(); // Prevent From Submit 
+
+        form.action = "{% url 'video-v2:text_preview_export' %}"
+        form.submit(); 
+    })
+
+</script>
 
 
 {% endblock content %}
