@@ -252,6 +252,7 @@
 
     let btnPreviewExport = document.querySelector('#btnPreviewExport'); 
     let form = document.querySelector('form'); 
+    let oldFormAction = form.action; 
 
 
     btnPreviewExport.addEventListener('click', (e)=> {
@@ -259,6 +260,7 @@
 
         form.action = "{% url 'video-v2:text_preview_export' %}"
         form.submit(); 
+        form.action = oldFormAction; 
     })
 
 </script>
