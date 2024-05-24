@@ -745,6 +745,7 @@ def text_preview_export(request):
             final = concatenate_videoclips([final, final_end_screen], method='chain')
 
             if audio_clip != None: 
+
                 final = final.without_audio() 
                 print('final duration: '+str(final.duration))
                 print("this is audio_clip duration: "+str(audio_clip.duration))
@@ -753,7 +754,11 @@ def text_preview_export(request):
                     audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 elif audio_clip.duration < final.duration: 
                     print('audio_clip.duration < final.duration' )
-                    audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
+                    if request.POST.get('loop-audio-input') == 1: 
+                        print(request.POST.get('loop-audio-input'))
+                        audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
+                    else: 
+                        audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 final = final.set_audio(audio_clip) 
 
             # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
@@ -1062,6 +1067,12 @@ def new_create(request):
             final = concatenate_videoclips([final, final_end_screen], method='chain')
 
             if audio_clip != None: 
+                
+                print('loop-audio-input')
+                print(request.POST.get('loop-audio-input'))
+                print('#########')
+
+
                 final = final.without_audio() 
                 print('final duration: '+str(final.duration))
                 print("this is audio_clip duration: "+str(audio_clip.duration))
@@ -1070,7 +1081,11 @@ def new_create(request):
                     audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 elif audio_clip.duration < final.duration: 
                     print('audio_clip.duration < final.duration' )
-                    audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
+                    if request.POST.get('loop-audio-input') =="on": 
+                        # audio_clip = afx.audio_loop(audio_clip, duration=int(final.duration)) 
+                        audio_clip = afx.audio_loop(audio_clip, duration=final.duration ) 
+                    #else: 
+                    #    audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 final = final.set_audio(audio_clip) 
 
             # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
