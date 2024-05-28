@@ -27,6 +27,11 @@
                 <p class="form-text">اختر ملف صوتي او فيديو</p>
             </div>
             <div class="mb-3">
+                <label for="audio-loop-input">تكرار الصوت</label>
+                <input type="checkbox" name="audio-loop-input" id="audio-loop-input">
+                <p class="form-text">حدد ما إن كنت تريد تكرار الملف الصوتي</p>
+            </div>
+            <div class="mb-3">
                 <label for="tpi-input" class="form-label">الوقت لكل صورة</label>
                 <input type="text" name="tpi-input" id='tpi-input' class="form-control" placeholder="أدخل الوقت المحدد لكل صورة">
             </div>
@@ -225,10 +230,28 @@
     </div>
     <div class="row">
         <div class="container" >
-            <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
+            <div class="row">
+                <div class="container">
+                    <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
+                    <button class="btn btn-info " type="submit" id="btn-export-preview">تصدير معاينة</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
+
+<script>
+
+    let btnExportPreview = document.querySelector('#btn-export-preview') 
+    let form = document.querySelector('form'); 
+    btnExportPreview.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        // #TODO create new function in the views to render the first 6 seconds from the video... 
+        // #TODO make it as the new action for the expoer preview submit button in the form... 
+        console.log(form.action);
+    })
+
+</script>
 
 
 {% endblock content %}
