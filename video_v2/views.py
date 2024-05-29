@@ -500,6 +500,12 @@ def text_preview_export(request):
 
     if request.POST: 
 
+        print("LOGO INPUT") 
+        logo_input_file = request.FILES.get('logo-input')
+        print(logo_input_file)
+        print("#"* 50) 
+
+
         if subscription.videos_per_months != 0:
 
 
@@ -761,6 +767,17 @@ def text_preview_export(request):
                         audio_clip = audio_clip.set_start(0).set_end(final.duration) 
                 final = final.set_audio(audio_clip) 
 
+            
+
+            if logo_input_file != None or logo_input_file != "": 
+                logo_input_path = logo_input_file.temporary_file_path() 
+                logo_clip = ImageClip(logo_input_path).set_duration(final.duration) 
+                logo_clip = resize(logo_clip, width=200) 
+                # logo_clip = logo_clip.set_position("left", "top")  
+
+                final  = CompositeVideoClip([final, logo_clip.set_position("left", "top")])
+            
+
             # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
             print('THIS IS DURATION') 
             print(final.duration)
@@ -821,6 +838,11 @@ def new_create(request):
 
 
     if request.POST: 
+
+        print("LOGO INPUT") 
+        logo_input_file = request.FILES.get('logo-input')
+        print(logo_input_file)
+        print("#"* 50) 
 
         if subscription.videos_per_months != 0:
 
@@ -1089,6 +1111,14 @@ def new_create(request):
                 final = final.set_audio(audio_clip) 
 
             # final.write_videofile('output.mp4', fps=30, threads=12, codec='libx264')
+
+            if logo_input_file != None or logo_input_file != "": 
+                logo_input_path = logo_input_file.temporary_file_path() 
+                logo_clip = ImageClip(logo_input_path).set_duration(final.duration) 
+                logo_clip = logo_clip.set_position('top', 'left') 
+
+                final  = CompositeVideoClip([final, logo_clip])
+            
             final.write_videofile('output.mp4', fps=30, threads=12, preset='ultrafast') 
 
             with open('output.mp4', 'rb') as f:

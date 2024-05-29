@@ -38,6 +38,12 @@
                 <input type="file" name="audio-input" id="audio-input" class="form-control" accept="video/*,audio/*">
                 <p class="form-text">اختر ملف صوتي او فيديو</p>
             </div>
+
+            <!-- ملف الشعار -->
+            <div class="mb-3">
+                <label for="logo-input" class="form-label">الشعار (غير اجباري)</label>
+                <input type="file" class="form-control" name="logo-input" id="logo-input" accept="image/*">
+            </div>
             <div class="mb-3">
                 <label for="audio-loop-input">تكرار الصوت</label>
                 <input type="checkbox" name="audio-loop-input" id="audio-loop-input">
@@ -245,33 +251,15 @@
     <div class="row">
         <div class="container" >
             <div class="row">
-<<<<<<< HEAD
-                <div class="container">
-                    <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
-                    <button class="btn btn-info " type="submit" id="btn-export-preview">تصدير معاينة</button>
-=======
                 <div class="col">
                     <button type="submit" class="btn btn-dark col-lg-2 col-sm-6 col-md-4 ">ابدأ</button>
                     <button type="submit" id="btnPreviewExport" class="btn btn-success col-lg-2 col-sm-6 col-md-4 ">تصدير معاينة 6 ثواني</button>
->>>>>>> refs/remotes/origin/main
                 </div>
             </div>
         </div>
     </div>
 </form>
 
-<script>
-
-    let btnExportPreview = document.querySelector('#btn-export-preview') 
-    let form = document.querySelector('form'); 
-    btnExportPreview.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        // #TODO create new function in the views to render the first 6 seconds from the video... 
-        // #TODO make it as the new action for the expoer preview submit button in the form... 
-        console.log(form.action);
-    })
-
-</script>
 
 
 <script>
