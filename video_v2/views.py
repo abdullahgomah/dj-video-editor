@@ -499,12 +499,14 @@ def text_preview_export(request):
 
 
     if request.POST: 
-
-        print("LOGO INPUT") 
+        
         logo_input_file = request.FILES.get('logo-input')
+
+        """
+        print("LOGO INPUT") 
         print(logo_input_file)
         print("#"* 50) 
-
+        """
 
         if subscription.videos_per_months != 0:
 
