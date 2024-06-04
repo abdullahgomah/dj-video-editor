@@ -470,7 +470,7 @@ def create_text_clip(txt, font_color, bg_color, font_size):
     return clip 
 
 
-def text_preview_export(request):
+def test_preview_export(request):
 
     user = request.user 
 
@@ -711,20 +711,21 @@ def text_preview_export(request):
 
 
             # for txt in new_top_text_list: 
-            for txt in top_text_list: 
-                if txt == "" or str(txt).strip() == "":
-                    continue ### اسطوووري 
-                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-                clip = clip.set_duration(top_tpt)
-                clip = clip.set_position(('center','center')) 
-                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
-                clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
-                clip = clip.set_start(last_end) 
-                end = top_tpt + last_end
-                clip = clip.set_end(end) 
-                last_end = end 
+            if len (top_text_list) != 0: 
+                for txt in top_text_list: 
+                    if txt == "" or str(txt).strip() == "":
+                        continue ### اسطوووري 
+                    clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                    clip = clip.set_duration(top_tpt)
+                    clip = clip.set_position(('center','center')) 
+                    color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                    clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
+                    clip = clip.set_start(last_end) 
+                    end = top_tpt + last_end
+                    clip = clip.set_end(end) 
+                    last_end = end 
 
-                top_clips.append(clip) 
+                    top_clips.append(clip) 
 
             last_end = 0 
             end = 0 
@@ -732,24 +733,37 @@ def text_preview_export(request):
             print(new_bottom_text_list)
             print('#' * 30) 
             # for txt in new_bottom_text_list: 
-            for txt in bottom_text_list: 
-                if txt == "" or str(txt).strip() == "":
-                    continue ### اسطوووري 
-                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-                clip = clip.set_duration(bottom_tpt)
-                clip = clip.set_position(('center','center')) 
-                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
-                clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
-                clip = clip.set_start(last_end) 
-                end = bottom_tpt + last_end
-                clip = clip.set_end(end) 
-                last_end = end 
+            if len(bottom_text_list) != 0: 
+                for txt in bottom_text_list: 
+                    if txt == "" or str(txt).strip() == "":
+                        continue ### اسطوووري 
+                    clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                    clip = clip.set_duration(bottom_tpt)
+                    clip = clip.set_position(('center','center')) 
+                    color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                    clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
+                    clip = clip.set_start(last_end) 
+                    end = bottom_tpt + last_end
+                    clip = clip.set_end(end) 
+                    last_end = end 
 
-                bottom_clips.append(clip) 
+                    bottom_clips.append(clip) 
+            
+            top_text_final = "" 
+            bottom_final_text = "" 
 
-            top_text_final = concatenate_videoclips(top_clips, method='chain') 
-            bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
-            final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+            if len(top_clips) !=0: 
+                top_text_final = concatenate_videoclips(top_clips, method='chain') 
+
+            if len(bottom_clips) !=0: 
+                bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
+
+            if top_text_final and bottom_final_text: 
+                final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+            elif bottom_final_text and not top_text_final: 
+                final = CompositeVideoClip(clips=[final, bottom_final_text.set_position('bottom')])
+            elif top_text_final and not bottom_final_text: 
+                final = CompositeVideoClip(clips=[final, top_text_final])
             final = concatenate_videoclips([final, final_end_screen], method='chain')
 
             if audio_clip != None: 

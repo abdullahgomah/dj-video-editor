@@ -272,7 +272,7 @@
     btnPreviewExport.addEventListener('click', (e)=> {
         e.preventDefault(); // Prevent From Submit 
 
-        form.action = "{% url 'video-v2:text_preview_export' %}"
+        form.action = "{% url 'video-v2:test_preview_export' %}"
         form.submit(); 
         form.action = oldFormAction; 
     })
