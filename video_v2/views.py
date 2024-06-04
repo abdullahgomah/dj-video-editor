@@ -582,16 +582,41 @@ def test_preview_export(request):
 
 
             ## Start End Screen Creation 
+
+            print("end screen main text") 
+            print(end_screen_main_text)
+            print(str(end_screen_main_text).strip()) 
+            print(type(end_screen_main_text)) 
+
+            print("#"* 30)
+
+            print("end_screen_url_text") 
+            print(end_screen_url_text) 
+            print(end_screen_url_text.strip())
+            print(type(end_screen_url_text)) 
+
+            end_screen_main_text_layer = "" 
+            end_screen_url_text_layer = "" 
+
             end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
-            if end_screen_main_text != None or str(end_screen_main_text).strip() == "": 
+            if str(end_screen_main_text).strip() != "" and str(end_screen_main_text) != "": 
                 end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4).set_position('center', 'center') 
             
-            if end_screen_url_text != None or str(end_screen_url_text).strip() == "": 
+            if str(end_screen_url_text).strip() != "" and str(end_screen_url_text) != "": 
                 end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
-                end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+                if end_screen_main_text_layer != "": 
+                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+                else: 
+                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', "center"))
             
-            final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
-
+            if end_screen_url_text_layer != "" and end_screen_main_text_layer != "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+            elif end_screen_url_text_layer != "" and end_screen_main_text_layer == "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_url_text_layer])
+            elif end_screen_url_text_layer == "" and end_screen_main_text_layer != "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer])
+            else: 
+                final_end_screen = end_screen_bg_layer 
 
             top_text_1 = request.POST.get('top-text-input-1') 
             top_text_2 = request.POST.get('top-text-input-2') 
@@ -935,16 +960,30 @@ def new_create(request):
                 height = 1080 
 
 
-            ## Start End Screen Creation 
+
+            end_screen_main_text_layer = "" 
+            end_screen_url_text_layer = "" 
+
             end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
-            if end_screen_main_text != None or str(end_screen_main_text).strip() == "": 
-                end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4).set_position('center', 'center') 
+            if str(end_screen_main_text).strip() != "" and str(end_screen_main_text) != "": 
+                end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4)
+                end_screen_main_text_layer = end_screen_main_text_layer.set_position('center',int(height/2 - int(end_screen_main_text_layer.size[1])-300)) 
             
-            if end_screen_url_text != None or str(end_screen_url_text).strip() == "": 
+            if str(end_screen_url_text).strip() != "" and str(end_screen_url_text) != "": 
                 end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
-                end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]+ 20)))
+                if end_screen_main_text_layer != "": 
+                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]-20 )))
+                else: 
+                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', "center"))
             
-            final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+            if end_screen_url_text_layer != "" and end_screen_main_text_layer != "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer, end_screen_url_text_layer])
+            elif end_screen_url_text_layer != "" and end_screen_main_text_layer == "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_url_text_layer])
+            elif end_screen_url_text_layer == "" and end_screen_main_text_layer != "": 
+                final_end_screen = CompositeVideoClip([end_screen_bg_layer, end_screen_main_text_layer])
+            else: 
+                final_end_screen = end_screen_bg_layer 
 
 
             top_text_1 = request.POST.get('top-text-input-1') 
@@ -962,35 +1001,10 @@ def new_create(request):
             new_top_text_list = [] 
             new_bottom_text_list = [] 
 
-            ## error happen becacuse list decreases, I should solve it using new list to add the value to it 
-            for i in range(int(len(top_text_list))): 
-                print(top_text_list[i]) 
-                if top_text_list[i] != None or top_text_list[i] != "" or top_text_list[i] != " " or len(top_text_list[i]) != 0: 
-                    formated_top_text = []  
-                    for word in top_text_list[i].split(' '):
-                        formated = reshaper.reshape(word)
-                        text_to_display = get_display(formated)
-                        # formated_top_text.append(formated)
-                        formated_top_text.append(text_to_display)
+            top_clips = []
+            bottom_clips = [] 
 
-                    top_text = get_display(' '.join(formated_top_text) )
-                    # top_text = ' '.join(formated_top_text)
-                
-                    new_top_text_list.append(top_text) 
-            
-            for i in range(int(len(bottom_text_list))): 
-                formated_top_text = []  
-                for word in bottom_text_list[i].split(' '):
-                    formated = reshaper.reshape(word)
-                    text_to_display = get_display(formated) 
-                    # formated_top_text.append(formated)
-                    formated_top_text.append(text_to_display)
 
-                bottom_text = get_display(' '.join(formated_top_text) )
-                # bottom_text = ' '.join(formated_top_text) 
-                
-                new_bottom_text_list.append(bottom_text) 
-            
             
             """
             المفروض هنا هعمل كليب نصي لكل عنصر من اللي موجودين في القائمة
@@ -1050,9 +1064,20 @@ def new_create(request):
             if bg_color != None or bg_color != "": 
                 bg_color = return_rgb(bg_color)
 
-            tpt =total_duration / len(clips) 
-            top_tpt = total_duration / len(new_top_text_list) 
-            bottom_tpt = total_duration / len(new_bottom_text_list) 
+            if len(clips) != 0: 
+                tpt =total_duration / len(clips) 
+            else: 
+                tpt = 0
+            
+            if len(new_top_text_list) != 0:
+                top_tpt = total_duration / len(new_top_text_list) 
+            else: 
+                top_tpt= 1
+            
+            if len(new_bottom_text_list) !=0:
+                bottom_tpt = total_duration / len(new_bottom_text_list) 
+            else: 
+                bottom_tpt=1
             last_end = 0 
 
             print('TPT') 
@@ -1065,20 +1090,21 @@ def new_create(request):
 
 
             # for txt in new_top_text_list: 
-            for txt in top_text_list: 
-                if txt == "" or str(txt).strip() == "":
-                    continue ### اسطوووري 
-                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-                clip = clip.set_duration(top_tpt)
-                clip = clip.set_position(('center','center')) 
-                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
-                clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
-                clip = clip.set_start(last_end) 
-                end = top_tpt + last_end
-                clip = clip.set_end(end) 
-                last_end = end 
+            if len (top_text_list) != 0: 
+                for txt in top_text_list: 
+                    if txt == "" or str(txt).strip() == "":
+                        continue ### اسطوووري 
+                    clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                    clip = clip.set_duration(top_tpt)
+                    clip = clip.set_position(('center','center')) 
+                    color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                    clip = CompositeVideoClip([color_clip, clip]).set_position('center','top')
+                    clip = clip.set_start(last_end) 
+                    end = top_tpt + last_end
+                    clip = clip.set_end(end) 
+                    last_end = end 
 
-                top_clips.append(clip) 
+                    top_clips.append(clip) 
 
             last_end = 0 
             end = 0 
@@ -1086,24 +1112,37 @@ def new_create(request):
             print(new_bottom_text_list)
             print('#' * 30) 
             # for txt in new_bottom_text_list: 
-            for txt in bottom_text_list: 
-                if txt == "" or str(txt).strip() == "":
-                    continue ### اسطوووري 
-                clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
-                clip = clip.set_duration(bottom_tpt)
-                clip = clip.set_position(('center','center')) 
-                color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
-                clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
-                clip = clip.set_start(last_end) 
-                end = bottom_tpt + last_end
-                clip = clip.set_end(end) 
-                last_end = end 
+            if len(bottom_text_list) != 0: 
+                for txt in bottom_text_list: 
+                    if txt == "" or str(txt).strip() == "":
+                        continue ### اسطوووري 
+                    clip = TextClip(txt, fontsize=font_size_input, color=text_color, method='caption', size=((final.size[0],0)), font=new_font)
+                    clip = clip.set_duration(bottom_tpt)
+                    clip = clip.set_position(('center','center')) 
+                    color_clip = ColorClip(size=((width, clip.size[1]+20)), color=bg_color).set_duration(clip.duration).set_opacity(opacity_input)
+                    clip = CompositeVideoClip([color_clip, clip]).set_position('center','bottom')
+                    clip = clip.set_start(last_end) 
+                    end = bottom_tpt + last_end
+                    clip = clip.set_end(end) 
+                    last_end = end 
 
-                bottom_clips.append(clip) 
+                    bottom_clips.append(clip) 
+            
+            top_text_final = "" 
+            bottom_final_text = "" 
 
-            top_text_final = concatenate_videoclips(top_clips, method='chain') 
-            bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
-            final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+            if len(top_clips) !=0: 
+                top_text_final = concatenate_videoclips(top_clips, method='chain') 
+
+            if len(bottom_clips) !=0: 
+                bottom_final_text = concatenate_videoclips(bottom_clips, method='chain')
+
+            if top_text_final and bottom_final_text: 
+                final = CompositeVideoClip(clips=[final, top_text_final, bottom_final_text.set_position('bottom')])
+            elif bottom_final_text and not top_text_final: 
+                final = CompositeVideoClip(clips=[final, bottom_final_text.set_position('bottom')])
+            elif top_text_final and not bottom_final_text: 
+                final = CompositeVideoClip(clips=[final, top_text_final])
             final = concatenate_videoclips([final, final_end_screen], method='chain')
 
             if audio_clip != None: 
