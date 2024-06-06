@@ -967,12 +967,12 @@ def new_create(request):
             end_screen_bg_layer = ColorClip(size=((width, height)), color=end_screen_bg).set_position("center", "center").set_duration(4) 
             if str(end_screen_main_text).strip() != "" and str(end_screen_main_text) != "": 
                 end_screen_main_text_layer = TextClip(txt=end_screen_main_text, color=end_screen_fg, method='caption', font=font_path, align='center', size=((width, 0)), fontsize=int(font_size_input)).set_duration(4)
-                end_screen_main_text_layer = end_screen_main_text_layer.set_position('center',int(height/2 - int(end_screen_main_text_layer.size[1])-300)) 
+                end_screen_main_text_layer = end_screen_main_text_layer.set_position(('center',int(height/2 - int(end_screen_main_text_layer.size[1])))) 
             
             if str(end_screen_url_text).strip() != "" and str(end_screen_url_text) != "": 
-                end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='caption',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
+                end_screen_url_text_layer = TextClip(txt=end_screen_url_text, color=end_screen_fg, method='label',font=font_path, fontsize=int(font_size_input)).set_duration(4) 
                 if end_screen_main_text_layer != "": 
-                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]-20 )))
+                    end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', ((height / 2) + end_screen_main_text_layer.size[1]-80 )))
                 else: 
                     end_screen_url_text_layer = end_screen_url_text_layer.set_position(('center', "center"))
             
@@ -1069,13 +1069,18 @@ def new_create(request):
             else: 
                 tpt = 0
             
-            if len(new_top_text_list) != 0:
-                top_tpt = total_duration / len(new_top_text_list) 
+            if len(top_text_list) != 0:
+                top_tpt = total_duration / len(top_text_list) 
             else: 
                 top_tpt= 1
+
+            print("top_TPT") 
             
-            if len(new_bottom_text_list) !=0:
-                bottom_tpt = total_duration / len(new_bottom_text_list) 
+            print (top_tpt) 
+            print('*' * 30) 
+            
+            if len(bottom_text_list) !=0:
+                bottom_tpt = total_duration / len(bottom_text_list) 
             else: 
                 bottom_tpt=1
             last_end = 0 
